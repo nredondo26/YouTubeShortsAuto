@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Main application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: youtube-short-auto
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./config.json:/app/config.json:ro
+      - ./fonts:/app/fonts
+      - ./Songs:/app/Songs
+      - ./.mp:/app/.mp
+      - ./firefox_profiles:/app/firefox_profiles
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Ollama for local LLM
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Whisper for speech-to-text (optional, lighter than running locally)
+  whisper:
+    image: onerahmet/openai-whisper-asr-webservice:latest
+    container_name: whisper
+    ports:
+      - "9000:9000"
+    environment:
+      - ASR_MODEL=base
+      - ASR_ENGINE=openai_whisper
+    volumes:
+      - whisper_models:/root/.cache/whisper
+    restart: unless-stopped
+    networks:
+      - app-network
+    profiles:
+      - with-whisper
+
+volumes:
+  ollama_data:
+  whisper_models:
+
+networks:
+  app-network:
+    driver: bridge

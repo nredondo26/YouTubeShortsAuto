@@ -26,6 +26,18 @@ faster-whisper>=0.10.0
 # AssemblyAI (optional)
 assemblyai>=0.20.0
 
+# YouTube Analytics (optional)
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.1.0
+google-auth-oauthlib>=1.0.0
+
+# Encryption
+cryptography>=41.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
 # Utils
 termcolor>=2.3.0
 prettytable>=3.9.0
