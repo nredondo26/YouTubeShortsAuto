@@ -727,248 +727,44 @@ def page_generate():
     col1, col2, col3 = st.columns([1, 2, 1])
     
     with col2:
-        # Phone frame mockup (YouTube Shorts / TikTok style)
-        phone_html = f"""
-        <div style="
-            display: flex;
-            justify-content: center;
-            padding: 20px 0;
-        ">
-            <!-- Phone frame -->
-            <div style="
-                width: 280px;
-                height: 500px;
-                background: #000;
-                border-radius: 30px;
-                padding: 10px;
-                box-shadow: 
-                    0 0 0 3px #333,
-                    0 0 0 6px #1a1a1a,
-                    0 20px 60px rgba(0,0,0,0.6);
-                position: relative;
-            ">
-                <!-- Notch -->
-                <div style="
-                    position: absolute;
-                    top: 10px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 100px;
-                    height: 25px;
-                    background: #000;
-                    border-radius: 0 0 15px 15px;
-                    z-index: 10;
-                "></div>
-                
-                <!-- Screen -->
-                <div style="
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
-                    border-radius: 22px;
-                    overflow: hidden;
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                ">
-                    <!-- Video area -->
-                    <div style="
-                        flex: 1;
-                        position: relative;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: {'flex-start' if subtitle_position == 'top' else 'center' if subtitle_position == 'center' else 'flex-end'};
-                        align-items: center;
-                        padding: 40px 15px 60px 15px;
-                    ">
-                        <!-- Simulated video content -->
-                        <div style="
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            right: 0;
-                            bottom: 0;
-                            background: 
-                                linear-gradient(180deg, 
-                                    rgba(0,0,0,0.4) 0%, 
-                                    transparent 20%,
-                                    transparent 80%,
-                                    rgba(0,0,0,0.4) 100%);
-                            z-index: 1;
-                        "></div>
-                        
-                        <!-- Horror themed background -->
-                        <div style="
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            right: 0;
-                            bottom: 0;
-                            background: 
-                                radial-gradient(circle at 30% 30%, #667eea22 0%, transparent 50%),
-                                radial-gradient(circle at 70% 70%, #764ba222 0%, transparent 50%),
-                                linear-gradient(135deg, #1a1a2e 0%, #0f0f23 100%);
-                            z-index: 0;
-                        "></div>
-                        
-                        <!-- Spooky elements -->
-                        <div style="
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            font-size: 60px;
-                            opacity: 0.2;
-                            z-index: 0;
-                        ">👻</div>
-                        
-                        <!-- Subtitle preview -->
-                        <div style="
-                            position: relative;
-                            z-index: 2;
-                            text-align: center;
-                            padding: 8px 12px;
-                            background: rgba(0,0,0,0.6);
-                            border-radius: 6px;
-                            max-width: 90%;
-                            {'margin-top: 15px;' if subtitle_position == 'top' else ''}
-                            {'margin: auto;' if subtitle_position == 'center' else ''}
-                            {'margin-bottom: 15px;' if subtitle_position == 'bottom' else ''}
-                        ">
-                            <span style="
-                                font-family: 'Impact', 'Arial Black', sans-serif;
-                                font-size: {min(subtitle_font_size * 0.4, 24)}px;
-                                color: {subtitle_color};
-                                text-shadow: 
-                                    -{subtitle_stroke_width * 0.5}px -{subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color},
-                                    {subtitle_stroke_width * 0.5}px -{subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color},
-                                    -{subtitle_stroke_width * 0.5}px {subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color},
-                                    {subtitle_stroke_width * 0.5}px {subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color};
-                                letter-spacing: 1px;
-                                line-height: 1.3;
-                                display: inline-block;
-                                word-wrap: break-word;
-                            ">
-                                Esto es un ejemplo de como se verian los subtitulos en tu video
-                            </span>
+        phone_html = f'''
+        <div style="display:flex;justify-content:center;padding:20px 0;">
+            <div style="width:280px;height:500px;background:#000;border-radius:30px;padding:10px;box-shadow:0 0 0 3px #333,0 0 0 6px #1a1a1a,0 20px 60px rgba(0,0,0,0.6);position:relative;">
+                <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:100px;height:25px;background:#000;border-radius:0 0 15px 15px;z-index:10;"></div>
+                <div style="width:100%;height:100%;background:linear-gradient(180deg,#1a1a2e 0%,#16213e 50%,#0f0f23 100%);border-radius:22px;overflow:hidden;position:relative;display:flex;flex-direction:column;">
+                    <div style="flex:1;position:relative;display:flex;flex-direction:column;justify-content:{'flex-start' if subtitle_position == 'top' else 'center' if subtitle_position == 'center' else 'flex-end'};align-items:center;padding:40px 15px 60px 15px;">
+                        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,0.4) 0%,transparent 20%,transparent 80%,rgba(0,0,0,0.4) 100%);z-index:1;"></div>
+                        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 30%,#667eea22 0%,transparent 50%),radial-gradient(circle at 70% 70%,#764ba222 0%,transparent 50%),linear-gradient(135deg,#1a1a2e 0%,#0f0f23 100%);z-index:0;"></div>
+                        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;opacity:0.2;z-index:0;">&#x1F47B;</div>
+                        <div style="position:relative;z-index:2;text-align:center;padding:8px 12px;background:rgba(0,0,0,0.6);border-radius:6px;max-width:90%;{'margin-top:15px;' if subtitle_position == 'top' else ''}{'' if subtitle_position == 'center' else ''}{'' if subtitle_position == 'bottom' else ''}{'margin-bottom:15px;' if subtitle_position == 'bottom' else ''}">
+                            <span style="font-family:Impact,Arial Black,sans-serif;font-size:{min(subtitle_font_size * 0.4, 24)}px;color:{subtitle_color};text-shadow:-{subtitle_stroke_width * 0.5}px -{subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color},{subtitle_stroke_width * 0.5}px -{subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color},-{subtitle_stroke_width * 0.5}px {subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color},{subtitle_stroke_width * 0.5}px {subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color};letter-spacing:1px;line-height:1.3;display:inline-block;word-wrap:break-word;">Esto es un ejemplo de como se verian los subtitulos en tu video</span>
                         </div>
                     </div>
-                    
-                    <!-- YouTube/TikTok UI overlay -->
-                    <div style="
-                        position: absolute;
-                        right: 8px;
-                        bottom: 80px;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 15px;
-                        z-index: 5;
-                    ">
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px;">❤️</div>
-                            <div style="font-size: 10px; color: white;">1.2K</div>
+                    <div style="position:absolute;right:8px;bottom:80px;display:flex;flex-direction:column;gap:15px;z-index:5;">
+                        <div style="text-align:center;"><div style="font-size:20px;">&#x2764;&#xFE0F;</div><div style="font-size:10px;color:white;">1.2K</div></div>
+                        <div style="text-align:center;"><div style="font-size:20px;">&#x1F4AC;</div><div style="font-size:10px;color:white;">89</div></div>
+                        <div style="text-align:center;"><div style="font-size:20px;">&#x2197;&#xFE0F;</div><div style="font-size:10px;color:white;">Share</div></div>
+                    </div>
+                    <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(transparent,rgba(0,0,0,0.8));z-index:5;">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                            <div style="width:28px;height:28px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:50%;"></div>
+                            <span style="color:white;font-size:12px;font-weight:bold;">@tucanal</span>
+                            <span style="background:#ff0000;color:white;font-size:8px;padding:2px 6px;border-radius:3px;font-weight:bold;">SUSCRIBIRSE</span>
                         </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px;">💬</div>
-                            <div style="font-size: 10px; color: white;">89</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px;">↗️</div>
-                            <div style="font-size: 10px; color: white;">Share</div>
+                        <div style="color:white;font-size:10px;line-height:1.4;">Historia de terror #shorts #horror</div>
+                        <div style="display:flex;align-items:center;gap:5px;margin-top:6px;font-size:10px;color:#aaa;">
+                            <span>&#x1F3B5;</span>
+                            <span style="overflow:hidden;white-space:nowrap;max-width:150px;">Musica original - @tucanal</span>
                         </div>
                     </div>
-                    
-                    <!-- Bottom bar (username, description, music) -->
-                    <div style="
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        padding: 10px 12px;
-                        background: linear-gradient(transparent, rgba(0,0,0,0.8));
-                        z-index: 5;
-                    ">
-                        <div style="
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            margin-bottom: 6px;
-                        ">
-                            <div style="
-                                width: 28px;
-                                height: 28px;
-                                background: linear-gradient(135deg, #667eea, #764ba2);
-                                border-radius: 50%;
-                            "></div>
-                            <span style="color: white; font-size: 12px; font-weight: bold;">@tucanal</span>
-                            <span style="
-                                background: #ff0000;
-                                color: white;
-                                font-size: 8px;
-                                padding: 2px 6px;
-                                border-radius: 3px;
-                                font-weight: bold;
-                            ">SUSCRIBIRSE</span>
-                        </div>
-                        <div style="
-                            color: white;
-                            font-size: 10px;
-                            line-height: 1.4;
-                        ">
-                            Historia de terror #shorts #horror
-                        </div>
-                        <div style="
-                            display: flex;
-                            align-items: center;
-                            gap: 5px;
-                            margin-top: 6px;
-                            font-size: 10px;
-                            color: #aaa;
-                        ">
-                            <span>🎵</span>
-                            <span style="overflow: hidden; white-space: nowrap; max-width: 150px;">
-                                ♪ Musica original - @tucanal
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <!-- Position indicator -->
-                    <div style="
-                        position: absolute;
-                        top: 45px;
-                        left: 10px;
-                        background: rgba(102, 126, 234, 0.9);
-                        padding: 3px 8px;
-                        border-radius: 4px;
-                        font-size: 10px;
-                        color: white;
-                        z-index: 10;
-                        font-weight: bold;
-                    ">
-                        📍 {subtitle_position.upper()}
-                    </div>
+                    <div style="position:absolute;top:45px;left:10px;background:rgba(102,126,234,0.9);padding:3px 8px;border-radius:4px;font-size:10px;color:white;z-index:10;font-weight:bold;">{subtitle_position.upper()}</div>
                 </div>
             </div>
         </div>
-        
-        <!-- Platform indicator -->
-        <div style="
-            text-align: center;
-            margin-top: -10px;
-            margin-bottom: 10px;
-        ">
-            <span style="
-                background: linear-gradient(135deg, #ff0000, #ff4444);
-                color: white;
-                padding: 5px 15px;
-                border-radius: 15px;
-                font-size: 12px;
-                font-weight: bold;
-            ">
-                YouTube Shorts / TikTok
-            </span>
+        <div style="text-align:center;margin-top:-10px;margin-bottom:10px;">
+            <span style="background:linear-gradient(135deg,#ff0000,#ff4444);color:white;padding:5px 15px;border-radius:15px;font-size:12px;font-weight:bold;">YouTube Shorts / TikTok</span>
         </div>
-        """
+        '''
         
         st.markdown(phone_html, unsafe_allow_html=True)
     
