@@ -579,7 +579,15 @@ Rules:
         if subtitle_clips:
             final_clip = CompositeVideoClip([final_clip] + subtitle_clips)
 
-        final_clip.write_videofile(output_path, threads=threads)
+        final_clip.write_videofile(
+            output_path,
+            threads=threads,
+            codec="libx264",
+            audio_codec="aac",
+            preset="ultrafast",
+            ffmpeg_params=["-crf", "28"],
+            logger=None,
+        )
 
         success(f"Video saved: {output_path}")
         return output_path
