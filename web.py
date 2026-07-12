@@ -1653,13 +1653,99 @@ def page_config():
             )
             config_data["threads"] = st.slider("Hilos de renderizado", 1, 8, config_data.get("threads", 2))
         with col2:
-            voices = ["es-MX-DaliaNeural", "es-ES-ElviraNeural", "es-AR-ElenaNeural",
-                      "en-US-JennyNeural", "en-GB-SoniaNeural", "pt-BR-FranciscaNeural"]
-            current_voice = config_data.get("tts_voice", "es-MX-DaliaNeural")
-            voice_idx = voices.index(current_voice) if current_voice in voices else 0
-            config_data["tts_voice"] = st.selectbox("Voz TTS", voices, index=voice_idx)
             config_data["is_for_kids"] = st.checkbox("Para ninos", value=config_data.get("is_for_kids", False))
             config_data["headless"] = st.checkbox("Firefox headless", value=config_data.get("headless", False))
+            config_data["tts_rate"] = st.text_input(
+                "Velocidad de voz",
+                value=config_data.get("tts_rate", "+0%"),
+                help="+0% normal, -10% mas lento, +10% mas rapido"
+            )
+    
+    # Voice Panel
+    st.markdown("---")
+    st.markdown("### 🎤 Panel de Voces")
+    st.caption("Selecciona la voz y escucha una muestra antes de usar")
+    
+    # Language filter
+    col1, col2 = st.columns([1, 3])
+    with col1:
+        voice_language = st.selectbox(
+            "Idioma",
+            options=["es", "en", "pt", "fr", "de", "it", "ja", "ko", "zh", "hi"],
+            index=0,
+            key="voice_lang"
+        )
+    
+    # Get voices for selected language
+    from src.tts import list_voices
+    
+    try:
+        voices = list_voices(voice_language)
+    except:
+        voices = []
+    
+    if voices:
+        # Voice selection
+        voice_options = {v["ShortName"]: f"{v['ShortName']} ({v.get('Gender', '?')})" for v in voices}
+        
+        with col2:
+            selected_voice = st.selectbox(
+                "Seleccionar voz",
+                options=list(voice_options.keys()),
+                format_func=lambda x: voice_options[x],
+                key="voice_select"
+            )
+        
+        # Voice info
+        voice_info = next((v for v in voices if v["ShortName"] == selected_voice), None)
+        if voice_info:
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.write(f"**Nombre:** {voice_info.get('ShortName', '?')}")
+            with col2:
+                st.write(f"**Genero:** {voice_info.get('Gender', '?')}")
+            with col3:
+                st.write(f"**Idioma:** {voice_info.get('Locale', '?')}")
+            with col4:
+                st.write(f"**Estilo:** {voice_info.get('VoiceType', '?')}")
+        
+        # Audio preview
+        st.markdown("#### 🔊 Escuchar Muestra")
+        
+        col1, col2, col3 = st.columns([2, 1, 2])
+        with col1:
+            sample_rate = st.selectbox(
+                "Velocidad de prueba",
+                options=["-20%", "-10%", "+0%", "+10%", "+20%"],
+                index=2,
+                key="sample_rate"
+            )
+        
+        with col2:
+            if st.button("▶️ Generar Muestra", use_container_width=True):
+                with st.spinner("Generando muestra de audio..."):
+                    from src.tts import generate_voice_sample
+                    sample_path = generate_voice_sample(selected_voice, voice_language, sample_rate)
+                    if sample_path:
+                        st.session_state["voice_sample"] = sample_path
+                        st.rerun()
+        
+        # Play sample
+        if "voice_sample" in st.session_state and os.path.exists(st.session_state["voice_sample"]):
+            with col3:
+                st.audio(st.session_state["voice_sample"], format="audio/mp3")
+        
+        # Set as default
+        st.markdown("#### ⚙️ Establecer como Voz por Defecto")
+        st.caption(f"Voz actual: **{config_data.get('tts_voice', 'es-CO-GonzaloNeural')}**")
+        
+        if st.button("✅ Usar esta voz como predeterminada", use_container_width=False):
+            config_data["tts_voice"] = selected_voice
+            st.success(f"Voz cambiada a: {selected_voice}")
+            st.rerun()
+    
+    else:
+        st.warning("No se encontraron voces para este idioma. Verifica tu conexion a internet.")
 
     with tab3:
         st.markdown("### Configuracion Avanzada")
