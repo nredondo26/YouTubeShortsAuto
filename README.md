@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎬 YouTubeShortsAuto
+# YouTubeShortsAuto
 
 **Automatizacion completa de YouTube Shorts con Inteligencia Artificial**
 
@@ -14,94 +14,48 @@
 
 Genera automaticamente YouTube Shorts completos: **topic, script, imagenes, voz, subtitulos y upload** a YouTube, TikTok e Instagram.
 
-[🚀 Instalacion Rapida](#-instalacion-rapida) | [📖 Documentacion](#-documentacion) | [🎨 Funcionalidades](#-funcionalidades) | [🐳 Docker](#-docker)
+[Instalacion Rapida](#instalacion-rapida) | [Funcionalidades](#funcionalidades) | [Docker](#docker)
 
 </div>
 
 ---
 
-## 📋 Tabla de Contenidos
-
-- [Funcionalidades](#-funcionalidades)
-- [Arquitectura](#-arquitectura)
-- [Instalacion Rapida](#-instalacion-rapida)
-- [Configuracion](#-configuracion)
-- [Uso](#-uso)
-- [Documentacion](#-documentacion)
-- [Multi-idioma](#-multi-idioma)
-- [Docker](#-docker)
-- [Solucion de Problemas](#-solucion-de-problemas)
-- [Roadmap](#-roadmap)
-- [Contribuir](#-contribuir)
-- [Licencia](#-licencia)
-
----
-
-## 🎯 Funcionalidades
+## Funcionalidades
 
 ### Pipeline Principal
 | Feature | Descripcion | Estado |
 |---------|-------------|--------|
-| **Generador de Topics** | IA crea topics unicos basados en tu nicho, evitando repeticiones | ✅ |
-| **Scripts con IA** | Genera guiones completos con Ollama (100% local) | ✅ |
-| **Imagenes AI** | Genera imagenes cinematicas con Pollinations AI (gratis) o Gemini | ✅ |
-| **Voz Natural** | Edge TTS con voces en 10+ idiomas | ✅ |
-| **Subtitulos** | Generacion automatica con Whisper o AssemblyAI + personalizacion completa | ✅ |
-| **Upload Automatico** | Sube a YouTube, TikTok o Instagram via Selenium | ✅ |
+| **Generador de Topics** | IA crea topics unicos basados en tu nicho o genero seleccionado | OK |
+| **Scripts con IA** | Genera guiones completos con Ollama (100% local) | OK |
+| **Imagenes AI** | Genera imagenes cinematicas con Pollinations AI (gratis) o Gemini | OK |
+| **Voz Natural** | Edge TTS con voces en 10+ idiomas | OK |
+| **Subtitulos** | Generacion automatica con Whisper + personalizacion completa | OK |
+| **Upload Automatico** | Sube a YouTube, TikTok o Instagram via Selenium | OK |
 
 ### Funciones Avanzadas
 | Feature | Descripcion | Estado |
 |---------|-------------|--------|
-| **Web UI** | Interfaz grafica con Streamlit, dark mode, mobile responsive | ✅ |
-| **Multi-canal** | Gestiona multiples canales con diferentes nichos | ✅ |
-| **Batch Generation** | Genera videos para varios canales simultaneamente | ✅ |
-| **Programador de Uploads** | Programa uploads automaticos a horas pico | ✅ |
-| **Historial y Analytics** | Estadisticas completas con graficas interactivas | ✅ |
-| **Subtitulos Personalizados** | Colores, fuentes, posicion, tamano | ✅ |
-| **Multi-idioma** | Soporte para ES, EN, PT, FR, DE, IT, JA, KO, ZH, HI | ✅ |
-| **Sonidos Ambientales** | Lluvia, truenos, viento, susurros para horror | ✅ |
-| **Musica Automatica** | Descarga musica libre si no hay archivos locales | ✅ |
-| **Notificaciones** | Desktop push y email al completar | ✅ |
-| **Drag & Drop** | Sube imagenes y musica personalizadas | ✅ |
-| **Rate Limiting** | Proteccion contra bans de APIs | ✅ |
-| **Encriptar Credenciales** | Seguridad con encriptacion AES | ✅ |
-| **YouTube Analytics** | Estadisticas de canal y videos | ✅ |
-| **Docker** | Despliegue facil con Docker Compose | ✅ |
+| **Web UI Profesional** | Interfaz oscura con Streamlit, mobile responsive | OK |
+| **Selector de Generos** | 11 generos predefinidos + tema personalizado | OK |
+| **Estilos de Subtitulos** | 8 estilos predefinidos (Clasico, Horror, Neon, Cyberpunk, etc.) | OK |
+| **Transparencia** | Control de opacidad para fondo y texto de subtitulos | OK |
+| **Preview de Video** | Reproductor integrado despues de generar | OK |
+| **Auto-upload** | Sube automaticamente a YouTube al generar | OK |
+| **Multi-canal** | Gestiona multiples canales con diferentes nichos | OK |
+| **Batch Generation** | Genera videos para varios canales simultaneamente | OK |
+| **Programador de Uploads** | Programa uploads automaticos a horas pico | OK |
+| **Historial y Analytics** | Estadisticas completas con graficas interactivas | OK |
+| **Multi-idioma** | Soporte para ES, EN, PT, FR, DE, IT, JA, KO, ZH, HI | OK |
+| **Sonidos Ambientales** | Lluvia, truenos, viento, susurros para horror | OK |
+| **Notificaciones** | Desktop push y email al completar | OK |
+| **Drag and Drop** | Sube imagenes y musica personalizadas | OK |
+| **Rate Limiting** | Proteccion contra bans de APIs | OK |
+| **Encriptar Credenciales** | Seguridad con encriptacion AES | OK |
+| **Docker** | Despliegue facil con Docker Compose | OK |
 
 ---
 
-## 🏗️ Arquitectura
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        YouTubeShortsAuto                        │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐      │
-│  │   Streamlit │────▶│   Pipeline  │────▶│  Plataformas │      │
-│  │   Web UI    │     │   Principal │     │  YouTube/TikTok│    │
-│  └─────────────┘     └─────────────┘     └─────────────┘      │
-│                            │                                    │
-│         ┌──────────────────┼──────────────────┐                │
-│         │                  │                  │                │
-│   ┌─────┴─────┐      ┌─────┴─────┐      ┌─────┴─────┐        │
-│   │  Ollama   │      │  Images   │      │    TTS    │        │
-│   │  (Local)  │      │Pollinations│     │ Edge TTS  │        │
-│   └───────────┘      └───────────┘      └───────────┘        │
-│         │                  │                  │                │
-│   ┌─────┴─────┐      ┌─────┴─────┐      ┌─────┴─────┐        │
-│   │  Script   │      │  Subtitles│      │   Music   │        │
-│   │  IA       │      │ Whisper   │      │   + SFX   │        │
-│   └───────────┘      └───────────┘      └───────────┘        │
-│                                                                 │
-├─────────────────────────────────────────────────────────────────┤
-│  📊 Analytics │ 🛡️ Rate Limiting │ 🔐 Encryption │ 📱 Mobile   │
-└─────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 🚀 Instalacion Rapida
+## Instalacion Rapida
 
 ### Opcion 1: Instalacion Local
 
@@ -121,7 +75,6 @@ pip install -r requirements.txt
 #### 3. Instalar Ollama
 
 ```bash
-# Instalar Ollama (https://ollama.ai)
 # Windows: descargar desde https://ollama.ai/download
 # Linux/Mac:
 curl -fsSL https://ollama.ai/install.sh | sh
@@ -136,7 +89,7 @@ ollama pull llama3.2:3b
 cp config.example.json config.json
 ```
 
-Editar `config.json` con tu configuracion (ver [Configuracion](#-configuracion)).
+Editar `config.json` con tu configuracion.
 
 #### 5. Ejecutar
 
@@ -153,28 +106,25 @@ py generar_y_subir.py
 ### Opcion 2: Docker (Recomendado)
 
 ```bash
-# Clonar repositorio
 git clone https://github.com/nredondo26/YouTubeShortsAuto.git
 cd YouTubeShortsAuto
 
-# Copiar configuracion
 cp config.example.json config.json
 # Editar config.json...
 
-# Ejecutar con Docker Compose
 docker-compose up -d
 
-# Con Whisper tambien:
+# Con Whisper:
 docker-compose --profile with-whisper up -d
 ```
 
-Abrir en: **http://localhost:8501**
+Abrir: **http://localhost:8501**
 
 ---
 
-## ⚙️ Configuracion
+## Configuracion
 
-### Archivo `config.json`
+### Archivo config.json
 
 ```json
 {
@@ -198,6 +148,8 @@ Abrir en: **http://localhost:8501**
   "subtitle_stroke_width": 4,
   "subtitle_font_size": 80,
   "subtitle_position": "center",
+  "subtitle_bg_alpha": 60,
+  "subtitle_text_alpha": 100,
   
   "nanobanana2_api_key": "",
   "nanobanana2_model": "gemini-2.5-flash-image"
@@ -206,22 +158,16 @@ Abrir en: **http://localhost:8501**
 
 ### Perfil de Firefox
 
-1. Abrir Firefox con el Administrador de Perfiles:
-```bash
-firefox -P
-```
-
-2. Crear un perfil nuevo para YouTube (ej: "YouTubeAuto")
-
+1. Abrir Firefox con el Administrador de Perfiles: `firefox -P`
+2. Crear un perfil nuevo para YouTube
 3. **Iniciar sesion en YouTube** con ese perfil
-
 4. Copiar la ruta del perfil en `config.json`
 
-> ⚠️ **Importante:** Cerrar Firefox antes de ejecutar el script.
+**Importante:** Cerrar Firefox antes de ejecutar el script.
 
 ---
 
-## 📖 Uso
+## Uso
 
 ### Web UI (Recomendado)
 
@@ -229,122 +175,82 @@ firefox -P
 py -m streamlit run web.py
 ```
 
-Abrir **http://localhost:8501** en tu navegador.
+Abrir **http://localhost:8501**
 
 **Funciones disponibles:**
-- 🏠 Dashboard con graficas de analytics
-- 🎥 Generar Short con preview antes de subir
-- 👤 Gestionar multiples cuentas
-- 📅 Programar uploads automaticos
-- 🚀 Generacion batch multi-canal
-- 📜 Historial y estadisticas
-- ⚙️ Configuracion visual
+- Dashboard con graficas de analytics
+- Generar Short con selector de generos y preview
+- Gestionar multiples cuentas
+- Programar uploads automaticos
+- Generacion batch multi-canal
+- Historial y estadisticas
+- Configuracion visual con estilos de subtitulos
+
+### Generar Video
+
+1. Seleccionar cuenta
+2. Elegir genero/tema (o usar nicho de la cuenta)
+3. Configurar subtitulos (color, estilo, transparencia)
+4. Click en "GENERAR VIDEO"
+5. El video se sube automaticamente a YouTube
 
 ### CLI
 
 ```bash
-# Generar y subir video
 py generar_y_subir.py
-
-# Solo generar (sin subir)
-py -c "from src.youtube import YouTube; yt = YouTube(...); yt.generate_video()"
 ```
-
-### Windows Batch
-
-Doble clic en `iniciar_web.bat`
 
 ---
 
-## 📖 Documentacion
+## Subtitulos Personalizados
 
-### Subtitulos Personalizados
+### Estilos Predefinidos
 
-Configura el estilo de los subtitulos en `config.json`:
+| Estilo | Color Texto | Color Borde | Borde |
+|--------|-------------|-------------|-------|
+| Clasico | #FFFF00 (Amarillo) | #000000 | 4px |
+| Moderno | #FFFFFF (Blanco) | #000000 | 3px |
+| Horror | #FF0000 (Rojo) | #000000 | 5px |
+| Neon | #00FFFF (Cyan) | #FF00FF | 3px |
+| Golden | #FFD700 (Dorado) | #8B4513 | 4px |
+| Minimal | #CCCCCC (Gris) | #333333 | 2px |
+| Cyberpunk | #FF00FF (Magenta) | #00FFFF | 4px |
+| Retro | #FFA500 (Naranja) | #000000 | 5px |
 
+### Transparencia
+
+- **Fondo subtitulos**: 0% (transparente) a 100% (opaco)
+- **Opacidad texto**: 0% (invisible) a 100% (completamente visible)
+
+Configurar en `config.json`:
 ```json
 {
-  "subtitle_color": "#FFFF00",
-  "subtitle_stroke_color": "#000000",
-  "subtitle_stroke_width": 4,
-  "subtitle_font_size": 80,
-  "subtitle_position": "center",
-  "subtitle_max_width": 1000
-}
-```
-
-| Parametro | Valores | Default |
-|-----------|---------|---------|
-| `subtitle_color` | Cualquier color hex | `#FFFF00` |
-| `subtitle_stroke_color` | Color del borde | `#000000` |
-| `subtitle_stroke_width` | Ancho del borde (px) | `4` |
-| `subtitle_font_size` | Tamano de fuente (px) | `80` |
-| `subtitle_position` | `top`, `center`, `bottom` | `center` |
-
-### Rate Limiting
-
-El sistema incluye rate limiting automatico para evitar bans:
-
-```python
-from src.rate_limit import rate_limit, get_rate_limits
-
-# Usar decorador
-@rate_limit("ollama")
-def call_llm():
-    ...
-
-# Verificar manualmente
-limits = get_rate_limits()
-if limits.check_rate_limit("gemini"):
-    # Hacer request
-    pass
-```
-
-**Limites por defecto:**
-- Ollama: 10 req/60s
-- Gemini: 15 req/60s
-- YouTube Upload: 5 req/5min
-
-### Encriptar Credenciales
-
-```python
-from src.credentials import migrate_to_encrypted
-migrate_to_encrypted()  # Encripta config.json
-```
-
-### YouTube Analytics
-
-```python
-from src.analytics import get_analytics
-
-analytics = get_analytics()
-if analytics.authenticate():
-    stats = analytics.get_channel_stats()
-    videos = analytics.get_recent_videos()
-    report = analytics.get_analytics_report(days=30)
-```
-
-### Notificaciones
-
-Configurar en `notifications.json`:
-
-```json
-{
-  "desktop_enabled": true,
-  "email_enabled": true,
-  "email_config": {
-    "smtp_server": "smtp.gmail.com",
-    "smtp_port": 587,
-    "sender_email": "tu@email.com",
-    "sender_password": "tu-password",
-    "recipient_email": "destino@email.com"
-  }
+  "subtitle_bg_alpha": 60,
+  "subtitle_text_alpha": 100
 }
 ```
 
 ---
 
-## 🌍 Multi-idioma
+## Generos Disponibles
+
+| Genero | Tema |
+|--------|------|
+| Nicho de la cuenta | Usa el nicho configurado |
+| Historias de terror | Terror, misterio, leyendas urbanas |
+| Misterio y conspiraciones | Conspiraciones, secretos oscuros |
+| Ciencia y naturaleza | Curiosidades, descubrimientos |
+| Historia y cultura | Civilizaciones antiguas |
+| Tecnologia y futuro | IA, innovacion |
+| Filosofia y psicologia | Reflexiones profundas |
+| Crimen real | Casos policiacos |
+| Mitologia y leyendas | Dioses, criaturas mitologicas |
+| Misterio espacial | Universo, vida extraterrestre |
+| Terror psicologico | Suspense, manipulacion |
+
+---
+
+## Multi-idioma
 
 Soporte para 10 idiomas con voces naturales:
 
@@ -356,23 +262,16 @@ Soporte para 10 idiomas con voces naturales:
 | `fr` | Francais | fr-FR-HenriNeural |
 | `de` | Deutsch | de-DE-ConradNeural |
 | `it` | Italiano | it-IT-DiegoNeural |
-| `ja` | 日本語 | ja-JP-KeitaNeural |
-| `ko` | 한국어 | ko-KR-InJoonNeural |
-| `zh` | 中文 | zh-CN-YunxiNeural |
-| `hi` | हिन्दी | hi-IN-MadhurNeural |
-
-Cambiar en `config.json`:
-```json
-{
-  "tts_voice": "en-US-GuyNeural"
-}
-```
+| `ja` | Japones | ja-JP-KeitaNeural |
+| `ko` | Coreano | ko-KR-InJoonNeural |
+| `zh` | Chino | zh-CN-YunxiNeural |
+| `hi` | Hindi | hi-IN-MadhurNeural |
 
 ---
 
-## 🐳 Docker
+## Docker
 
-### Servicios incluidos
+### Servicios
 
 | Servicio | Puerto | Descripcion |
 |----------|--------|-------------|
@@ -383,32 +282,16 @@ Cambiar en `config.json`:
 ### Comandos
 
 ```bash
-# Iniciar todo
 docker-compose up -d
-
-# Ver logs
 docker-compose logs -f
-
-# Detener
 docker-compose down
-
-# Con Whisper
 docker-compose --profile with-whisper up -d
-
-# Reconstruir
 docker-compose build --no-cache
 ```
 
-### Volumenes montados
-
-- `config.json` → Configuracion
-- `fonts/` → Fuentes personalizadas
-- `Songs/` → Musica de fondo
-- `.mp/` → Cache y archivos temporales
-
 ---
 
-## 📱 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 YouTubeShortsAuto/
@@ -433,11 +316,6 @@ YouTubeShortsAuto/
 │   ├── utils.py          # Utilidades
 │   └── youtube.py        # Pipeline principal
 ├── tests/                # Tests unitarios
-│   ├── test_config.py
-│   ├── test_cache.py
-│   ├── test_languages.py
-│   ├── test_notifications.py
-│   └── test_scheduler.py
 ├── web.py                # Streamlit Web UI
 ├── generar_y_subir.py    # CLI script
 ├── Dockerfile            # Docker
@@ -449,7 +327,7 @@ YouTubeShortsAuto/
 
 ---
 
-## 🔧 Solucion de Problemas
+## Solucion de Problemas
 
 | Problema | Solucion |
 |----------|----------|
@@ -463,20 +341,8 @@ YouTubeShortsAuto/
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
-- [x] Multi-canal con batch generation
-- [x] Programacion de uploads
-- [x] Soporte TikTok e Instagram
-- [x] Generacion de thumbnails
-- [x] Analytics y estadisticas con graficas
-- [x] Subtitulos personalizados
-- [x] Multi-idioma (10 idiomas)
-- [x] Docker + Docker Compose
-- [x] Tests unitarios
-- [x] Encriptar credenciales
-- [x] Rate limiting
-- [x] Notificaciones
 - [ ] CI/CD con GitHub Actions
 - [ ] Telegram Bot para control remoto
 - [ ] Webhook para integraciones
@@ -484,9 +350,7 @@ YouTubeShortsAuto/
 
 ---
 
-## 🤝 Contribuir
-
-Las contribuciones son bienvenidas:
+## Contribuir
 
 1. Fork el proyecto
 2. Crea una branch (`git checkout -b feature/nueva-funcionalidad`)
@@ -503,7 +367,7 @@ pytest tests/ -v --cov=src
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Distribuido bajo la licencia MIT. Ver `LICENSE` para mas informacion.
 
@@ -514,7 +378,5 @@ Distribuido bajo la licencia MIT. Ver `LICENSE` para mas informacion.
 **Hecho con Python + Ollama + Selenium + Streamlit**
 
 [![GitHub](https://img.shields.io/badge/GitHub-nredondo26-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/nredondo26)
-
-⭐ Star este repositorio si te fue util!
 
 </div>

@@ -57,312 +57,289 @@ st.set_page_config(
 )
 
 # ──────────────────────────────────────────────
-# Custom CSS (Dark Mode)
+# Custom CSS (Professional Dark Theme)
 # ──────────────────────────────────────────────
 
 st.markdown("""
 <style>
-    /* Main theme */
+    /* ═══════════════════════════════════════════════
+       BASE & TYPOGRAPHY
+       ═══════════════════════════════════════════════ */
     .stApp {
-        background-color: #0e1117;
+        background-color: #0f0f1a;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     
-    /* Headers */
+    /* Global text size reduction */
+    .stMarkdown p, .stMarkdown li, .stMarkdown span {
+        font-size: 0.875rem !important;
+        line-height: 1.5;
+    }
+    
+    /* Headers - compact */
     .main-header {
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-align: center;
-        margin-bottom: 0.5rem;
+        font-size: 1.5rem !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        margin-bottom: 0.25rem !important;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #1e1e3a;
     }
     .sub-header {
-        text-align: center;
-        color: #8b8b8b;
-        margin-bottom: 2rem;
-        font-size: 1.1rem;
+        color: #6b7280 !important;
+        font-size: 0.8rem !important;
+        margin-bottom: 1rem !important;
+        margin-top: 0 !important;
     }
     
-    /* Cards */
-    .status-card {
-        background: linear-gradient(145deg, #1e1e2e 0%, #252535 100%);
-        border-radius: 16px;
-        padding: 1.5rem;
-        border-left: 4px solid #667eea;
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
+    /* ═══════════════════════════════════════════════
+       CARDS & CONTAINERS
+       ═══════════════════════════════════════════════ */
     .metric-card {
-        background: linear-gradient(145deg, #1e1e2e 0%, #252535 100%);
-        border-radius: 16px;
-        padding: 1.5rem;
+        background: #1a1a2e;
+        border: 1px solid #252540;
+        border-radius: 8px;
+        padding: 1rem;
         text-align: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        transition: transform 0.2s;
+        transition: all 0.2s ease;
     }
     .metric-card:hover {
-        transform: translateY(-5px);
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 1px #3b82f620;
     }
     .metric-value {
-        font-size: 2rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-size: 1.75rem !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        line-height: 1.2;
     }
     .metric-label {
-        color: #8b8b8b;
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
+        color: #6b7280 !important;
+        font-size: 0.7rem !important;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 0.25rem;
     }
     
-    /* Status boxes */
+    /* Section cards */
+    .section-card {
+        background: #1a1a2e;
+        border: 1px solid #252540;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    .section-title {
+        font-size: 0.8rem !important;
+        font-weight: 600 !important;
+        color: #9ca3af !important;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #252540;
+    }
+    
+    /* Status indicators */
     .success-box {
-        background: linear-gradient(145deg, #1a3a1a 0%, #1d4a1d 100%);
-        border: 1px solid #2d5a2d;
-        border-radius: 12px;
-        padding: 1rem 1.5rem;
-        color: #4ade80;
-        box-shadow: 0 4px 15px rgba(74, 222, 128, 0.1);
+        background: #0f2f1a;
+        border: 1px solid #166534;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        color: #22c55e;
+        font-size: 0.8rem;
     }
     .error-box {
-        background: linear-gradient(145deg, #3a1a1a 0%, #4a1d1d 100%);
-        border: 1px solid #5a2d2d;
-        border-radius: 12px;
-        padding: 1rem 1.5rem;
-        color: #f87171;
-        box-shadow: 0 4px 15px rgba(248, 113, 113, 0.1);
+        background: #2f0f1a;
+        border: 1px solid #991b1b;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        color: #ef4444;
+        font-size: 0.8rem;
     }
     .warning-box {
-        background: linear-gradient(145deg, #3a3a1a 0%, #4a4a1d 100%);
-        border: 1px solid #5a5a2d;
-        border-radius: 12px;
-        padding: 1rem 1.5rem;
-        color: #fbbf24;
-        box-shadow: 0 4px 15px rgba(251, 191, 36, 0.1);
+        background: #2f2f0f;
+        border: 1px solid #854d0e;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        color: #eab308;
+        font-size: 0.8rem;
     }
+    
+    /* ═══════════════════════════════════════════════
+       FORM ELEMENTS
+       ═══════════════════════════════════════════════ */
     
     /* Buttons */
     .stButton > button {
-        width: 100%;
-        border-radius: 12px;
-        font-weight: 600;
-        padding: 0.6rem 1.5rem;
-        transition: all 0.3s ease;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border: none;
-        color: white;
+        background: #3b82f6 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.8rem !important;
+        font-weight: 500 !important;
+        transition: all 0.15s ease !important;
     }
     .stButton > button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        background: #2563eb !important;
     }
     .stButton > button:active {
-        transform: translateY(-1px);
+        background: #1d4ed8 !important;
+    }
+    
+    /* Primary button */
+    .stButton > button[data-testid="stBaseButton-primary"],
+    .stButton > button:has(span:contains("GENERAR")),
+    .stButton > button:has(span:contains("Guardar")) {
+        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%) !important;
     }
     
     /* Inputs */
     .stTextInput > div > div > input,
     .stTextArea > div > div > textarea {
-        background-color: #1e1e2e;
-        border: 1px solid #3d3d5c;
-        border-radius: 8px;
-        color: #ffffff;
+        background-color: #1a1a2e !important;
+        border: 1px solid #252540 !important;
+        border-radius: 6px !important;
+        color: #ffffff !important;
+        font-size: 0.85rem !important;
+        padding: 0.5rem 0.75rem !important;
     }
     .stTextInput > div > div > input:focus,
     .stTextArea > div > div > textarea:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 1px #3b82f640 !important;
     }
     
     /* Selectbox */
     .stSelectbox > div > div {
-        background-color: #1e1e2e;
-        border-radius: 8px;
+        background-color: #1a1a2e !important;
+        border: 1px solid #252540 !important;
+        border-radius: 6px !important;
+    }
+    
+    /* Slider */
+    .stSlider > div > div > div > div {
+        background: #3b82f6 !important;
+    }
+    
+    /* Checkbox & Toggle */
+    .stCheckbox > label {
+        font-size: 0.8rem !important;
+    }
+    
+    /* ═══════════════════════════════════════════════
+       LAYOUT COMPONENTS
+       ═══════════════════════════════════════════════ */
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0 !important;
+        background: #1a1a2e !important;
+        border-radius: 6px !important;
+        padding: 4px !important;
+        border: 1px solid #252540 !important;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background: transparent !important;
+        border-radius: 4px !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.8rem !important;
+        color: #6b7280 !important;
+        border: none !important;
+    }
+    .stTabs [aria-selected="true"] {
+        background: #3b82f6 !important;
+        color: white !important;
+    }
+    .stTabs [data-baseweb="tab-highlight"] {
+        display: none !important;
+    }
+    .stTabs [data-baseweb="tab-border"] {
+        display: none !important;
     }
     
     /* Expander */
     .streamlit-expanderHeader {
-        background-color: #1e1e2e;
-        border-radius: 8px;
-    }
-    
-    /* Sidebar */
-    [data-testid="stSidebar"] {
-        background-color: #0a0a12;
-    }
-    [data-testid="stSidebar"] .stMarkdown {
-        color: #ffffff;
+        background-color: #1a1a2e !important;
+        border: 1px solid #252540 !important;
+        border-radius: 6px !important;
+        font-size: 0.8rem !important;
+        padding: 0.5rem 0.75rem !important;
     }
     
     /* Divider */
     hr {
-        border-color: #3d3d5c;
-    }
-    
-    /* Code blocks */
-    .stCodeBlock {
-        border-radius: 8px;
+        border-color: #252540 !important;
+        margin: 1rem 0 !important;
     }
     
     /* Progress bar */
     .stProgress > div > div > div {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%) !important;
     }
     
-    /* Tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
+    /* ═══════════════════════════════════════════════
+       SIDEBAR
+       ═══════════════════════════════════════════════ */
+    [data-testid="stSidebar"] {
+        background-color: #0a0a14 !important;
+        border-right: 1px solid #1e1e3a !important;
     }
-    .stTabs [data-baseweb="tab"] {
-        background-color: #1e1e2e;
-        border-radius: 8px 8px 0 0;
-        padding: 10px 20px;
+    [data-testid="stSidebar"] .stMarkdown p,
+    [data-testid="stSidebar"] .stMarkdown li {
+        font-size: 0.8rem !important;
     }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    [data-testid="stSidebar"] .stRadio > label {
+        font-size: 0.8rem !important;
     }
     
-    /* Footer */
-    .footer {
-        text-align: center;
-        color: #5a5a7a;
-        padding: 2rem;
-        font-size: 0.9rem;
+    /* ═══════════════════════════════════════════════
+       TABLES & DATA
+       ═══════════════════════════════════════════════ */
+    .stDataFrame {
+        border-radius: 8px;
+        overflow: hidden;
     }
     
     /* ═══════════════════════════════════════════════
        MOBILE RESPONSIVE
        ═══════════════════════════════════════════════ */
-    
-    /* Base mobile styles */
     @media (max-width: 768px) {
-        /* Headers */
         .main-header {
-            font-size: 1.8rem !important;
-            margin-bottom: 0.3rem !important;
+            font-size: 1.25rem !important;
         }
-        .sub-header {
-            font-size: 0.95rem !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        /* Cards */
-        .status-card, .metric-card {
-            padding: 1rem !important;
-            margin-bottom: 0.75rem !important;
-            border-radius: 12px !important;
+        .metric-card {
+            padding: 0.75rem !important;
         }
         .metric-value {
-            font-size: 1.5rem !important;
+            font-size: 1.25rem !important;
         }
-        .metric-label {
-            font-size: 0.8rem !important;
-        }
-        
-        /* Status boxes */
-        .success-box, .error-box, .warning-box {
-            padding: 0.8rem !important;
-            border-radius: 8px !important;
-        }
-        
-        /* Buttons */
         .stButton > button {
-            padding: 0.5rem 1rem !important;
-            font-size: 0.95rem !important;
-            border-radius: 8px !important;
+            padding: 0.4rem 0.75rem !important;
         }
-        
-        /* Inputs */
-        .stTextInput > div > div > input,
-        .stTextArea > div > div > textarea {
-            padding: 0.6rem !important;
-            font-size: 0.9rem !important;
-        }
-        
-        /* Sidebar */
-        [data-testid="stSidebar"] {
-            width: 100% !important;
-            min-width: 100% !important;
-        }
-        
-        /* Columns - stack on mobile */
-        .stColumn {
-            min-width: 100% !important;
-        }
-        
-        /* Tabs */
-        .stTabs [data-baseweb="tab"] {
-            padding: 8px 12px !important;
-            font-size: 0.85rem !important;
-        }
-        
-        /* Reduce padding */
         .block-container {
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-        }
-        
-        /* Footer */
-        .footer {
-            padding: 1rem !important;
-            font-size: 0.8rem !important;
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
         }
     }
     
-    /* Very small screens */
-    @media (max-width: 480px) {
-        .main-header {
-            font-size: 1.5rem !important;
-        }
-        
-        .metric-card {
-            padding: 0.8rem !important;
-        }
-        .metric-value {
-            font-size: 1.3rem !important;
-        }
-        
-        .stButton > button {
-            padding: 0.4rem 0.8rem !important;
-            font-size: 0.9rem !important;
-        }
+    /* ═══════════════════════════════════════════════
+       SCROLLBAR
+       ═══════════════════════════════════════════════ */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
     }
-    
-    /* Tablet */
-    @media (min-width: 769px) and (max-width: 1024px) {
-        .main-header {
-            font-size: 2.2rem !important;
-        }
+    ::-webkit-scrollbar-track {
+        background: #0f0f1a;
     }
-    
-    /* Touch-friendly styles */
-    @media (hover: none) and (pointer: coarse) {
-        .stButton > button {
-            min-height: 48px !important;
-            min-width: 48px !important;
-        }
-        
-        .stTextInput > div > div > input,
-        .stTextArea > div > div > textarea {
-            min-height: 48px !important;
-        }
-        
-        .stSelectbox > div > div {
-            min-height: 48px !important;
-        }
+    ::-webkit-scrollbar-thumb {
+        background: #252540;
+        border-radius: 3px;
     }
-    
-    /* Landscape mobile */
-    @media (max-width: 768px) and (orientation: landscape) {
-        .main-header {
-            font-size: 1.5rem !important;
-        }
-        
-        .metric-card {
-            padding: 0.6rem !important;
-        }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #3b82f6;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -440,8 +417,8 @@ def render_sidebar():
 
 def page_dashboard():
     """Main dashboard with overview and charts."""
-    st.markdown('<h1 class="main-header">🎬 YouTubeShortsAuto</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">YouTube Shorts Automation Dashboard</p>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">Dashboard</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Resumen general del sistema</p>', unsafe_allow_html=True)
 
     # Metrics
     accounts = get_accounts("youtube")
@@ -449,9 +426,9 @@ def page_dashboard():
     uploaded_videos = sum(1 for a in accounts for v in a.get("videos", []) if v.get("url"))
     pending_videos = total_videos - uploaded_videos
 
-    col1, col2, col3, col4 = st.columns(4)
+    c1, c2, c3, c4 = st.columns(4)
 
-    with col1:
+    with c1:
         st.markdown("""
         <div class="metric-card">
             <div class="metric-value">{}</div>
@@ -459,15 +436,15 @@ def page_dashboard():
         </div>
         """.format(len(accounts)), unsafe_allow_html=True)
 
-    with col2:
+    with c2:
         st.markdown("""
         <div class="metric-card">
             <div class="metric-value">{}</div>
-            <div class="metric-label">Videos Generados</div>
+            <div class="metric-label">Generados</div>
         </div>
         """.format(total_videos), unsafe_allow_html=True)
 
-    with col3:
+    with c3:
         st.markdown("""
         <div class="metric-card">
             <div class="metric-value">{}</div>
@@ -475,7 +452,7 @@ def page_dashboard():
         </div>
         """.format(uploaded_videos), unsafe_allow_html=True)
 
-    with col4:
+    with c4:
         st.markdown("""
         <div class="metric-card">
             <div class="metric-value">{}</div>
@@ -486,13 +463,19 @@ def page_dashboard():
     st.markdown("---")
 
     # Charts section
-    st.markdown("### 📊 Analisis")
-    
+    col_left, col_right = st.columns([2, 1])
+
+    with col_left:
+        st.markdown('<div class="section-title">Analisis de Videos</div>', unsafe_allow_html=True)
+
+    with col_right:
+        st.markdown('<div class="section-title">Videos Recientes</div>', unsafe_allow_html=True)
+
     if total_videos > 0:
         import plotly.express as px
         import plotly.graph_objects as go
         from datetime import datetime, timedelta
-        
+
         # Collect all video data
         all_videos = []
         for acc in accounts:
@@ -500,140 +483,162 @@ def page_dashboard():
                 v["account"] = acc.get("nickname", "?")
                 v["niche"] = acc.get("niche", "?")
                 all_videos.append(v)
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            # Videos per account (Pie chart)
-            account_counts = {}
+
+        col_left, col_right = st.columns([2, 1])
+
+        with col_left:
+            # Charts in 2x2 grid
+            chart_col1, chart_col2 = st.columns(2)
+
+            with chart_col1:
+                # Videos per account (Pie chart)
+                account_counts = {}
+                for v in all_videos:
+                    acc_name = v.get("account", "Unknown")
+                    account_counts[acc_name] = account_counts.get(acc_name, 0) + 1
+
+                fig_pie = px.pie(
+                    values=list(account_counts.values()),
+                    names=list(account_counts.keys()),
+                    title="Videos por Cuenta",
+                    color_discrete_sequence=px.colors.sequential.Plasma,
+                    hole=0.4
+                )
+                fig_pie.update_layout(
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    font_color="white",
+                    height=280,
+                    margin=dict(t=40, b=20, l=20, r=20)
+                )
+                fig_pie.update_traces(textposition='inside', textinfo='percent')
+                st.plotly_chart(fig_pie, use_container_width=True)
+
+            with chart_col2:
+                # Upload status (Donut chart)
+                status_data = {"Subidos": uploaded_videos, "Pendientes": pending_videos}
+
+                fig_status = px.pie(
+                    values=list(status_data.values()),
+                    names=list(status_data.keys()),
+                    title="Estado de Uploads",
+                    color_discrete_sequence=["#4ade80", "#fbbf24"],
+                    hole=0.6
+                )
+                fig_status.update_layout(
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    font_color="white",
+                    height=280,
+                    margin=dict(t=40, b=20, l=20, r=20)
+                )
+                fig_status.update_traces(textposition='inside', textinfo='percent')
+                st.plotly_chart(fig_status, use_container_width=True)
+
+            # Timeline chart
+            daily_counts = {}
             for v in all_videos:
-                acc_name = v.get("account", "Unknown")
-                account_counts[acc_name] = account_counts.get(acc_name, 0) + 1
-            
-            fig_pie = px.pie(
-                values=list(account_counts.values()),
-                names=list(account_counts.keys()),
-                title="Videos por Cuenta",
-                color_discrete_sequence=px.colors.sequential.Plasma,
-                hole=0.4
-            )
-            fig_pie.update_layout(
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
-                font_color="white",
-                height=350
-            )
-            st.plotly_chart(fig_pie, use_container_width=True)
-        
-        with col2:
-            # Upload status (Donut chart)
-            status_data = {"Subidos": uploaded_videos, "Pendientes": pending_videos}
-            
-            fig_status = px.pie(
-                values=list(status_data.values()),
-                names=list(status_data.keys()),
-                title="Estado de Uploads",
-                color_discrete_sequence=["#4ade80", "#fbbf24"],
-                hole=0.6
-            )
-            fig_status.update_layout(
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
-                font_color="white",
-                height=350
-            )
-            st.plotly_chart(fig_status, use_container_width=True)
-        
-        # Timeline chart
-        st.markdown("### 📈 Timeline de Generacion")
-        
-        # Parse dates and group by day
-        daily_counts = {}
-        for v in all_videos:
-            date_str = v.get("date", "")
-            if date_str:
-                try:
-                    date = datetime.fromisoformat(date_str.replace("Z", "+00:00")).date()
-                    daily_counts[date] = daily_counts.get(date, 0) + 1
-                except:
-                    pass
-        
-        if daily_counts:
-            dates = sorted(daily_counts.keys())
-            counts = [daily_counts[d] for d in dates]
-            
-            fig_timeline = px.bar(
-                x=dates,
-                y=counts,
-                title="Videos Generados por Dia",
-                labels={"x": "Fecha", "y": "Videos"},
-                color_discrete_sequence=["#667eea"]
-            )
-            fig_timeline.update_layout(
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
-                font_color="white",
-                height=300,
-                xaxis=dict(tickangle=-45)
-            )
-            st.plotly_chart(fig_timeline, use_container_width=True)
-        
-        # Niche distribution
-        st.markdown("### 🎯 Distribucion por Nicho")
-        
-        niche_counts = {}
-        for v in all_videos:
-            niche = v.get("niche", "Unknown")
-            niche_counts[niche] = niche_counts.get(niche, 0) + 1
-        
-        fig_niche = px.bar(
-            x=list(niche_counts.keys()),
-            y=list(niche_counts.values()),
-            title="Videos por Nicho",
-            labels={"x": "Nicho", "y": "Videos"},
-            color=list(niche_counts.keys()),
-            color_discrete_sequence=px.colors.sequential.Viridis
-        )
-        fig_niche.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-            font_color="white",
-            height=300,
-            showlegend=False
-        )
-        st.plotly_chart(fig_niche, use_container_width=True)
-        
-    else:
-        st.info("📊 Las graficas apareceran cuando tengas videos generados.")
+                date_str = v.get("date", "")
+                if date_str:
+                    try:
+                        date = datetime.fromisoformat(date_str.replace("Z", "+00:00")).date()
+                        daily_counts[date] = daily_counts.get(date, 0) + 1
+                    except:
+                        pass
 
+            if daily_counts:
+                dates = sorted(daily_counts.keys())
+                counts = [daily_counts[d] for d in dates]
+
+                fig_timeline = px.bar(
+                    x=dates,
+                    y=counts,
+                    title="Videos por Dia",
+                    labels={"x": "Fecha", "y": "Videos"},
+                    color_discrete_sequence=["#3b82f6"]
+                )
+                fig_timeline.update_layout(
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    font_color="white",
+                    height=200,
+                    margin=dict(t=40, b=40, l=40, r=20),
+                    xaxis=dict(tickangle=-45)
+                )
+                st.plotly_chart(fig_timeline, use_container_width=True)
+
+            # Niche distribution
+            niche_counts = {}
+            for v in all_videos:
+                niche = v.get("niche", "Unknown")
+                niche_counts[niche] = niche_counts.get(niche, 0) + 1
+
+            fig_niche = px.bar(
+                x=list(niche_counts.keys()),
+                y=list(niche_counts.values()),
+                title="Videos por Nicho",
+                labels={"x": "Nicho", "y": "Videos"},
+                color=list(niche_counts.keys()),
+                color_discrete_sequence=px.colors.sequential.Viridis
+            )
+            fig_niche.update_layout(
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font_color="white",
+                height=200,
+                margin=dict(t=40, b=40, l=40, r=20),
+                showlegend=False
+            )
+            st.plotly_chart(fig_niche, use_container_width=True)
+
+        with col_right:
+            # Recent videos - compact list
+            all_videos.sort(key=lambda x: x.get("date", ""), reverse=True)
+            for v in all_videos[:8]:
+                status = "✅" if v.get("url") else "⏳"
+                st.markdown(f"""
+                <div style="padding:0.5rem 0;border-bottom:1px solid #252540;">
+                    <div style="font-size:0.8rem;color:#fff;">{status} {v.get('title', 'Sin titulo')[:45]}</div>
+                    <div style="font-size:0.7rem;color:#6b7280;">{v.get('account', '?')} | {v.get('date', '?')[:10]}</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+    else:
+        st.info("Las graficas apareceran cuando tengas videos generados.")
+
+    # System status
     st.markdown("---")
+    st.markdown('<div class="section-title">Estado del Sistema</div>', unsafe_allow_html=True)
 
-    # Recent videos
-    st.markdown("### 📹 Videos Recientes")
-    all_videos = []
-    for acc in accounts:
-        for v in acc.get("videos", []):
-            v["account"] = acc.get("nickname", "?")
-            all_videos.append(v)
-
-    if all_videos:
-        all_videos.sort(key=lambda x: x.get("date", ""), reverse=True)
-        for v in all_videos[:5]:
-            with st.container():
-                c1, c2, c3 = st.columns([3, 2, 1])
-                c1.write(f"**{v.get('title', 'Sin titulo')[:60]}**")
-                c2.write(f"📁 {v.get('account', '?')} | 📅 {v.get('date', '?')}")
-                if v.get("url"):
-                    c3.link_button("Ver", v["url"], type="secondary")
-    else:
-        st.info("Aun no hay videos generados. Ve a **Generar Short** para crear el primero.")
+    sys_col1, sys_col2, sys_col3 = st.columns(3)
+    with sys_col1:
+        st.markdown("""
+        <div class="metric-card">
+            <div class="metric-value" style="font-size:1rem;color:#4ade80;">Activo</div>
+            <div class="metric-label">Sistema</div>
+        </div>
+        """, unsafe_allow_html=True)
+    with sys_col2:
+        st.markdown("""
+        <div class="metric-card">
+            <div class="metric-value" style="font-size:1rem;color:#3b82f6;">{}</div>
+            <div class="metric-label">Cuentas Activas</div>
+        </div>
+        """.format(len(accounts)), unsafe_allow_html=True)
+    with sys_col3:
+        st.markdown("""
+        <div class="metric-card">
+            <div class="metric-value" style="font-size:1rem;color:#8b5cf6;">Auto</div>
+            <div class="metric-label">Modo</div>
+        </div>
+        """, unsafe_allow_html=True)
 
 
 def page_generate():
     """Video generation page."""
     global _pipeline_status, _pipeline_result, _upload_status, _upload_error, _upload_account
 
-    st.markdown('<h1 class="main-header">🎥 Generar Short</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">Generar Short</h1>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header">Genera un video completo con IA</p>', unsafe_allow_html=True)
 
     accounts = get_accounts("youtube")
@@ -642,188 +647,182 @@ def page_generate():
         st.warning("No hay cuentas configuradas. Ve a **Cuentas** primero.")
         return
 
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        account_names = [f"{a['nickname']} ({a['niche']})" for a in accounts]
-        selected_idx = st.selectbox("Seleccionar Cuenta", range(len(accounts)), format_func=lambda i: account_names[i])
-        account = accounts[selected_idx]
-    with col2:
-        st.write("")
-        st.write("")
-        st.info(f"UUID: `{account['id'][:8]}...`")
+    # Account selection
+    account_names = [f"{a['nickname']} ({a['niche']})" for a in accounts]
+    selected_idx = st.selectbox("Cuenta", range(len(accounts)), format_func=lambda i: account_names[i])
+    account = accounts[selected_idx]
+
+    # Auto-upload option
+    auto_upload = st.checkbox("Subir automaticamente a YouTube despues de generar", value=True, key="auto_upload")
+
+    # Genre/Topic selection
+    GENRES = {
+        "Nicho de la cuenta": "",
+        "Historias de terror": "historias de terror, misterio, leyendas urbanas, lo paranormal",
+        "Misterio y conspiraciones": "misterio, conspiraciones, secretos oscuros, fenomenos inexplicables",
+        "Ciencia y naturaleza": "ciencia, naturaleza, curiosidades, descubrimientos asombrosos",
+        "Historia y cultura": "historia, cultura, civilizaciones antiguas, eventos historicos",
+        "Tecnologia y futuro": "tecnologia, inteligencia artificial, futuro, innovacion",
+        "Filosofia y psicologia": "filosofia, psicologia, mente humana, reflexiones profundas",
+        "Crimen real": "crimen real, casos policiacos, investigaciones, justicia",
+        "Mitologia y leyendas": "mitologia, leyendas antiguas, dioses, criaturas mitologicas",
+        "Misterio espacial": "espacio, universo, agujeros negros, vida extraterrestre",
+        "Terror psicologico": "terror psicologico, suspense, manipulacion, mente oscura",
+    }
+
+    col_genre, col_account = st.columns([2, 1])
+    with col_genre:
+        selected_genre = st.selectbox("Genero / Tema", options=list(GENRES.keys()), index=0)
+        custom_topic = ""
+        if selected_genre == "Nicho de la cuenta":
+            st.caption(f"Usara el nicho de la cuenta: **{account.get('niche', '?')}**")
+        else:
+            custom_topic = st.text_input("Tema personalizado (opcional)", placeholder="Ej: La leyenda del Silbon en Venezuela")
+    
+    with col_account:
+        with st.expander("Info de la cuenta", expanded=False):
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Nick", account.get("nickname", "?"))
+            c2.metric("Nicho", account.get("niche", "?"))
+            c3.metric("Idioma", account.get("language", "?"))
 
     st.markdown("---")
 
-    with st.expander("ℹ️ Informacion de la Cuenta", expanded=False):
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Nickname", account.get("nickname", "?"))
-        c2.metric("Niche", account.get("niche", "?"))
-        c3.metric("Idioma", account.get("language", "?"))
+    # Main controls
+    col_config, col_subtitle = st.columns([1, 1])
 
-    st.markdown("### ⚙️ Configuracion del Video")
-    col1, col2 = st.columns(2)
-    with col1:
+    with col_config:
+        st.markdown('<div class="section-title">Configuracion del Video</div>', unsafe_allow_html=True)
         sentence_length = st.slider("Oraciones del guion", 2, 10, cfg_get("script_sentence_length", 4))
-        is_for_kids = st.checkbox("Marcado para ninos", value=cfg_get("is_for_kids", False))
-    with col2:
         subtitle_chars = st.slider("Caracteres por subtitulo", 10, 80, cfg_get("subtitle_max_chars", 40))
-        headless = st.checkbox("Firefox headless (sin ventana)", value=cfg_get("headless", False))
-    
-    # Subtitle customization section
-    st.markdown("---")
-    st.markdown("### 🎨 Personalizacion de Subtitulos")
-    st.caption("Configura como se veran los subtitulos en el video")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        subtitle_color = st.color_picker(
-            "Color del texto",
-            value=cfg_get("subtitle_color", "#FFFF00"),
-            key="sub_color"
-        )
-        subtitle_stroke_color = st.color_picker(
-            "Color del borde",
-            value=cfg_get("subtitle_stroke_color", "#000000"),
-            key="sub_stroke_color"
-        )
-    
-    with col2:
-        subtitle_font_size = st.slider(
-            "Tamano de fuente",
-            min_value=20,
-            max_value=150,
-            value=cfg_get("subtitle_font_size", 80),
-            key="sub_font_size"
-        )
-        subtitle_stroke_width = st.slider(
-            "Ancho del borde",
-            min_value=0,
-            max_value=10,
-            value=cfg_get("subtitle_stroke_width", 4),
-            key="sub_stroke_width"
-        )
-    
-    with col3:
-        subtitle_position = st.selectbox(
-            "Posicion vertical",
-            options=["top", "center", "bottom"],
-            index=["top", "center", "bottom"].index(cfg_get("subtitle_position", "center")),
-            key="sub_position"
-        )
-        subtitle_max_width = st.slider(
-            "Ancho maximo (px)",
-            min_value=400,
-            max_value=1200,
-            value=cfg_get("subtitle_max_width", 1000),
-            step=100,
-            key="sub_max_width"
-        )
-    
-    # Live preview
-    st.markdown("#### 👁️ Vista Previa en Vivo")
-    st.caption("Asi se verian los subtitulos en YouTube Shorts / TikTok")
-    
-    col1, col2, col3 = st.columns([1, 2, 1])
-    
-    with col2:
+        c1, c2 = st.columns(2)
+        is_for_kids = c1.checkbox("Para ninos", value=cfg_get("is_for_kids", False))
+        headless = c2.checkbox("Headless", value=cfg_get("headless", False))
+
+    with col_subtitle:
+        st.markdown('<div class="section-title">Subtitulos</div>', unsafe_allow_html=True)
+        
+        # Subtitle style presets
+        SUBTITLE_STYLES = {
+            "Personalizado": {},
+            "Clasico (Amarillo)": {"color": "#FFFF00", "stroke": "#000000", "width": 4, "bg_alpha": 60},
+            "Moderno (Blanco)": {"color": "#FFFFFF", "stroke": "#000000", "width": 3, "bg_alpha": 50},
+            "Horror (Rojo)": {"color": "#FF0000", "stroke": "#000000", "width": 5, "bg_alpha": 70},
+            "Neon (Cyan)": {"color": "#00FFFF", "stroke": "#FF00FF", "width": 3, "bg_alpha": 40},
+            "Golden": {"color": "#FFD700", "stroke": "#8B4513", "width": 4, "bg_alpha": 55},
+            "Minimal (Gris)": {"color": "#CCCCCC", "stroke": "#333333", "width": 2, "bg_alpha": 30},
+            "Cyberpunk": {"color": "#FF00FF", "stroke": "#00FFFF", "width": 4, "bg_alpha": 60},
+            "Retro": {"color": "#FFA500", "stroke": "#000000", "width": 5, "bg_alpha": 65},
+        }
+        
+        selected_style = st.selectbox("Estilo predefinido", options=list(SUBTITLE_STYLES.keys()), key="sub_style")
+        
+        # Apply preset or use custom values
+        if selected_style != "Personalizado" and SUBTITLE_STYLES[selected_style]:
+            preset = SUBTITLE_STYLES[selected_style]
+            default_color = preset["color"]
+            default_stroke = preset["stroke"]
+            default_width = preset["width"]
+            default_bg_alpha = preset["bg_alpha"]
+        else:
+            default_color = cfg_get("subtitle_color", "#FFFF00")
+            default_stroke = cfg_get("subtitle_stroke_color", "#000000")
+            default_width = cfg_get("subtitle_stroke_width", 4)
+            default_bg_alpha = cfg_get("subtitle_bg_alpha", 60)
+        
+        c1, c2 = st.columns(2)
+        subtitle_color = c1.color_picker("Color texto", value=default_color, key="sub_color")
+        subtitle_stroke_color = c2.color_picker("Color borde", value=default_stroke, key="sub_stroke_color")
+        c1, c2 = st.columns(2)
+        subtitle_font_size = c1.slider("Fuente", 20, 150, cfg_get("subtitle_font_size", 80), key="sub_font_size")
+        subtitle_stroke_width = c2.slider("Borde", 0, 10, default_width, key="sub_stroke_width")
+        c1, c2 = st.columns(2)
+        subtitle_position = c1.selectbox("Posicion", ["top", "center", "bottom"], index=["top", "center", "bottom"].index(cfg_get("subtitle_position", "center")), key="sub_position")
+        subtitle_max_width = c2.slider("Ancho max", 400, 1200, cfg_get("subtitle_max_width", 1000), step=100, key="sub_max_width")
+        
+        # Transparency controls
+        st.markdown('<div class="section-title">Transparencia</div>', unsafe_allow_html=True)
+        c1, c2 = st.columns(2)
+        subtitle_bg_alpha = c1.slider("Fondo subtitulos %", 0, 100, default_bg_alpha, key="sub_bg_alpha", help="0 = transparente, 100 = opaco")
+        subtitle_text_alpha = c2.slider("Opacidad texto %", 0, 100, cfg_get("subtitle_text_alpha", 100), key="sub_text_alpha", help="100 = completamente visible")
+
+    # Preview
+    with st.expander("Vista previa de subtitulos", expanded=False):
+        bg_alpha_hex = format(int(subtitle_bg_alpha * 2.55), '02x')
+        text_alpha_hex = format(int(subtitle_text_alpha * 2.55), '02x')
+        
         phone_html = f'''
-        <div style="display:flex;justify-content:center;padding:20px 0;">
-            <div style="width:280px;height:500px;background:#000;border-radius:30px;padding:10px;box-shadow:0 0 0 3px #333,0 0 0 6px #1a1a1a,0 20px 60px rgba(0,0,0,0.6);position:relative;">
-                <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:100px;height:25px;background:#000;border-radius:0 0 15px 15px;z-index:10;"></div>
-                <div style="width:100%;height:100%;background:linear-gradient(180deg,#1a1a2e 0%,#16213e 50%,#0f0f23 100%);border-radius:22px;overflow:hidden;position:relative;display:flex;flex-direction:column;">
-                    <div style="flex:1;position:relative;display:flex;flex-direction:column;justify-content:{'flex-start' if subtitle_position == 'top' else 'center' if subtitle_position == 'center' else 'flex-end'};align-items:center;padding:40px 15px 60px 15px;">
-                        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,0.4) 0%,transparent 20%,transparent 80%,rgba(0,0,0,0.4) 100%);z-index:1;"></div>
-                        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 30%,#667eea22 0%,transparent 50%),radial-gradient(circle at 70% 70%,#764ba222 0%,transparent 50%),linear-gradient(135deg,#1a1a2e 0%,#0f0f23 100%);z-index:0;"></div>
-                        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;opacity:0.2;z-index:0;">&#x1F47B;</div>
-                        <div style="position:relative;z-index:2;text-align:center;padding:8px 12px;background:rgba(0,0,0,0.6);border-radius:6px;max-width:90%;{'margin-top:15px;' if subtitle_position == 'top' else ''}{'' if subtitle_position == 'center' else ''}{'' if subtitle_position == 'bottom' else ''}{'margin-bottom:15px;' if subtitle_position == 'bottom' else ''}">
-                            <span style="font-family:Impact,Arial Black,sans-serif;font-size:{min(subtitle_font_size * 0.4, 24)}px;color:{subtitle_color};text-shadow:-{subtitle_stroke_width * 0.5}px -{subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color},{subtitle_stroke_width * 0.5}px -{subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color},-{subtitle_stroke_width * 0.5}px {subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color},{subtitle_stroke_width * 0.5}px {subtitle_stroke_width * 0.5}px 0 {subtitle_stroke_color};letter-spacing:1px;line-height:1.3;display:inline-block;word-wrap:break-word;">Esto es un ejemplo de como se verian los subtitulos en tu video</span>
+        <div style="display:flex;justify-content:center;padding:10px 0;">
+            <div style="width:240px;height:430px;background:#000;border-radius:24px;padding:8px;box-shadow:0 0 0 2px #333,0 10px 40px rgba(0,0,0,0.5);position:relative;">
+                <div style="width:100%;height:100%;background:linear-gradient(180deg,#1a1a2e 0%,#16213e 50%,#0f0f23 100%);border-radius:18px;overflow:hidden;position:relative;display:flex;flex-direction:column;">
+                    <div style="flex:1;position:relative;display:flex;flex-direction:column;justify-content:{'flex-start' if subtitle_position == 'top' else 'center' if subtitle_position == 'center' else 'flex-end'};align-items:center;padding:30px 12px 50px 12px;">
+                        <div style="position:relative;z-index:2;text-align:center;padding:6px 10px;background:rgba(0,0,0,{subtitle_bg_alpha/100});border-radius:4px;max-width:90%;{'margin-top:12px;' if subtitle_position == 'top' else ''}{'' if subtitle_position == 'center' else ''}{'' if subtitle_position == 'bottom' else ''}{'margin-bottom:12px;' if subtitle_position == 'bottom' else ''}">
+                            <span style="font-family:Impact,Arial Black,sans-serif;font-size:{min(subtitle_font_size * 0.35, 20)}px;color:{subtitle_color}{text_alpha_hex};opacity:{subtitle_text_alpha/100};text-shadow:-{subtitle_stroke_width * 0.4}px -{subtitle_stroke_width * 0.4}px 0 {subtitle_stroke_color},{subtitle_stroke_width * 0.4}px -{subtitle_stroke_width * 0.4}px 0 {subtitle_stroke_color},-{subtitle_stroke_width * 0.4}px {subtitle_stroke_width * 0.4}px 0 {subtitle_stroke_color},{subtitle_stroke_width * 0.4}px {subtitle_stroke_width * 0.4}px 0 {subtitle_stroke_color};letter-spacing:1px;line-height:1.2;display:inline-block;word-wrap:break-word;">Ejemplo de subtitulos</span>
                         </div>
                     </div>
-                    <div style="position:absolute;right:8px;bottom:80px;display:flex;flex-direction:column;gap:15px;z-index:5;">
-                        <div style="text-align:center;"><div style="font-size:20px;">&#x2764;&#xFE0F;</div><div style="font-size:10px;color:white;">1.2K</div></div>
-                        <div style="text-align:center;"><div style="font-size:20px;">&#x1F4AC;</div><div style="font-size:10px;color:white;">89</div></div>
-                        <div style="text-align:center;"><div style="font-size:20px;">&#x2197;&#xFE0F;</div><div style="font-size:10px;color:white;">Share</div></div>
+                    <div style="position:absolute;right:6px;bottom:60px;display:flex;flex-direction:column;gap:12px;z-index:5;">
+                        <div style="text-align:center;"><div style="font-size:16px;">&#x2764;&#xFE0F;</div><div style="font-size:8px;color:white;">1.2K</div></div>
+                        <div style="text-align:center;"><div style="font-size:16px;">&#x1F4AC;</div><div style="font-size:8px;color:white;">89</div></div>
+                        <div style="text-align:center;"><div style="font-size:16px;">&#x2197;&#xFE0F;</div><div style="font-size:8px;color:white;">Share</div></div>
                     </div>
-                    <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(transparent,rgba(0,0,0,0.8));z-index:5;">
-                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                            <div style="width:28px;height:28px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:50%;"></div>
-                            <span style="color:white;font-size:12px;font-weight:bold;">@tucanal</span>
-                            <span style="background:#ff0000;color:white;font-size:8px;padding:2px 6px;border-radius:3px;font-weight:bold;">SUSCRIBIRSE</span>
+                    <div style="position:absolute;bottom:0;left:0;right:0;padding:8px 10px;background:linear-gradient(transparent,rgba(0,0,0,0.8));z-index:5;">
+                        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+                            <div style="width:24px;height:24px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border-radius:50%;"></div>
+                            <span style="color:white;font-size:10px;font-weight:bold;">@tucanal</span>
+                            <span style="background:#ff0000;color:white;font-size:7px;padding:2px 5px;border-radius:3px;font-weight:bold;">SUSCRIBIRSE</span>
                         </div>
-                        <div style="color:white;font-size:10px;line-height:1.4;">Historia de terror #shorts #horror</div>
-                        <div style="display:flex;align-items:center;gap:5px;margin-top:6px;font-size:10px;color:#aaa;">
-                            <span>&#x1F3B5;</span>
-                            <span style="overflow:hidden;white-space:nowrap;max-width:150px;">Musica original - @tucanal</span>
-                        </div>
+                        <div style="color:white;font-size:9px;line-height:1.3;">Historia de terror #shorts</div>
                     </div>
-                    <div style="position:absolute;top:45px;left:10px;background:rgba(102,126,234,0.9);padding:3px 8px;border-radius:4px;font-size:10px;color:white;z-index:10;font-weight:bold;">{subtitle_position.upper()}</div>
+                    <div style="position:absolute;top:40px;left:8px;background:rgba(59,130,246,0.9);padding:2px 6px;border-radius:3px;font-size:8px;color:white;z-index:10;font-weight:bold;">{subtitle_position.upper()}</div>
                 </div>
             </div>
         </div>
-        <div style="text-align:center;margin-top:-10px;margin-bottom:10px;">
-            <span style="background:linear-gradient(135deg,#ff0000,#ff4444);color:white;padding:5px 15px;border-radius:15px;font-size:12px;font-weight:bold;">YouTube Shorts / TikTok</span>
-        </div>
         '''
-        
         st.markdown(phone_html, unsafe_allow_html=True)
-    
-    # Configuration summary
-    with st.expander("📋 Configuracion actual", expanded=False):
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.write(f"**Color texto:** {subtitle_color}")
-            st.write(f"**Color borde:** {subtitle_stroke_color}")
-        with col2:
-            st.write(f"**Tamano fuente:** {subtitle_font_size}px")
-            st.write(f"**Ancho borde:** {subtitle_stroke_width}px")
-        with col3:
-            st.write(f"**Posicion:** {subtitle_position}")
-            st.write(f"**Ancho max:** {subtitle_max_width}px")
-    
-    st.markdown("---")
-    
-    # Drag & Drop for custom images
-    st.markdown("### 📁 Imagenes Personalizadas (Opcional)")
-    st.caption("Arrastra imagenes para usar en el video. Si no subes nada, se usaran imagenes generadas por IA.")
-    
-    uploaded_images = st.file_uploader(
-        "Seleccionar imagenes",
-        type=["png", "jpg", "jpeg", "webp"],
-        accept_multiple_files=True,
-        key="custom_images",
-        help="Formatos soportados: PNG, JPG, JPEG, WEBP"
-    )
-    
-    if uploaded_images:
-        st.success(f"✅ {len(uploaded_images)} imagenes seleccionadas")
-        cols = st.columns(min(4, len(uploaded_images)))
-        for i, img in enumerate(uploaded_images[:4]):
-            with cols[i]:
-                st.image(img, caption=f"Imagen {i+1}", use_container_width=True)
-    
-    # Drag & Drop for custom background music
-    st.markdown("### 🎵 Musica de Fondo Personalizada (Opcional)")
-    st.caption("Arrastra un archivo de audio para usar como musica de fondo.")
-    
-    uploaded_music = st.file_uploader(
-        "Seleccionar musica",
-        type=["mp3", "wav", "ogg", "m4a"],
-        accept_multiple_files=False,
-        key="custom_music",
-        help="Formatos soportados: MP3, WAV, OGG, M4A"
-    )
-    
-    if uploaded_music:
-        st.success(f"✅ Musica seleccionada: {uploaded_music.name}")
+        
+        # Show current settings
+        c1, c2, c3, c4 = st.columns(4)
+        c1.caption(f"Texto: {subtitle_color}")
+        c2.caption(f"Borde: {subtitle_stroke_color}")
+        c3.caption(f"Fondo: {subtitle_bg_alpha}%")
+        c4.caption(f"Opacidad: {subtitle_text_alpha}%")
+
+    with st.expander("Archivos personalizados (Opcional)", expanded=False):
+        c1, c2 = st.columns(2)
+        with c1:
+            uploaded_images = st.file_uploader("Imagenes", type=["png", "jpg", "jpeg", "webp"], accept_multiple_files=True, key="custom_images")
+            if uploaded_images:
+                st.success(f"{len(uploaded_images)} imagenes seleccionadas")
+        with c2:
+            uploaded_music = st.file_uploader("Musica de fondo", type=["mp3", "wav", "ogg", "m4a"], accept_multiple_files=False, key="custom_music")
+            if uploaded_music:
+                st.success(f"Musica: {uploaded_music.name}")
 
     st.markdown("---")
 
+    # Generation button
     if _pipeline_status == "running":
         _render_running()
     elif _pipeline_status == "done":
         _render_result()
-        if st.button("🔄 Generar otro video", use_container_width=True):
+        
+        # Video preview
+        if _pipeline_result and _pipeline_result.get("video_path"):
+            st.markdown('<div class="section-title">Preview del Video</div>', unsafe_allow_html=True)
+            video_path = _pipeline_result["video_path"]
+            if os.path.exists(video_path):
+                st.video(video_path)
+                
+                # Show metadata
+                if _pipeline_result.get("metadata"):
+                    meta = _pipeline_result["metadata"]
+                    c1, c2 = st.columns(2)
+                    with c1:
+                        st.text_input("Titulo", value=meta.get("title", ""), disabled=True)
+                    with c2:
+                        st.text_area("Descripcion", value=meta.get("description", ""), disabled=True, height=100)
+        
+        if st.button("Generar otro video", use_container_width=True):
             _pipeline_status = "idle"
             _pipeline_result = None
             with _log_lock:
@@ -831,18 +830,27 @@ def page_generate():
             st.rerun()
     elif _pipeline_status == "error":
         _render_result()
-        if st.button("🔄 Reintentar", use_container_width=True):
+        if st.button("Reintentar", use_container_width=True):
             _pipeline_status = "idle"
             _pipeline_result = None
             with _log_lock:
                 _pipeline_logs.clear()
             st.rerun()
     else:
-        if st.button("🚀 GENERAR VIDEO", type="primary", use_container_width=True):
+        if st.button("GENERAR VIDEO", type="primary", use_container_width=True):
+            # Determine the niche/topic to use
+            if selected_genre == "Nicho de la cuenta":
+                final_niche = account.get("niche", "")
+            elif custom_topic:
+                final_niche = f"{selected_genre}: {custom_topic}"
+            else:
+                final_niche = GENRES[selected_genre]
+            
             _start_pipeline(
                 account, sentence_length, is_for_kids, subtitle_chars, headless,
                 subtitle_color, subtitle_stroke_color, subtitle_font_size,
-                subtitle_stroke_width, subtitle_position, subtitle_max_width
+                subtitle_stroke_width, subtitle_position, subtitle_max_width,
+                subtitle_bg_alpha, subtitle_text_alpha, final_niche, auto_upload
             )
             st.rerun()
 
@@ -850,7 +858,9 @@ def page_generate():
 def _start_pipeline(account, sentence_length, is_for_kids, subtitle_chars, headless,
                     subtitle_color="#FFFF00", subtitle_stroke_color="#000000",
                     subtitle_font_size=80, subtitle_stroke_width=4,
-                    subtitle_position="center", subtitle_max_width=1000):
+                    subtitle_position="center", subtitle_max_width=1000,
+                    subtitle_bg_alpha=60, subtitle_text_alpha=100, custom_niche=None,
+                    auto_upload=True):
     global _pipeline_status, _pipeline_result, _upload_account, _upload_status
 
     _pipeline_status = "running"
@@ -868,7 +878,7 @@ def _start_pipeline(account, sentence_length, is_for_kids, subtitle_chars, headl
     set_log_callback(log_callback)
 
     def pipeline_thread():
-        global _pipeline_status, _pipeline_result
+        global _pipeline_status, _pipeline_result, _upload_status, _upload_url, _upload_error
         try:
             from src import config
             config._config_cache = None
@@ -884,17 +894,23 @@ def _start_pipeline(account, sentence_length, is_for_kids, subtitle_chars, headl
             config._config_cache["subtitle_stroke_width"] = subtitle_stroke_width
             config._config_cache["subtitle_position"] = subtitle_position
             config._config_cache["subtitle_max_width"] = subtitle_max_width
+            config._config_cache["subtitle_bg_alpha"] = subtitle_bg_alpha
+            config._config_cache["subtitle_text_alpha"] = subtitle_text_alpha
 
             model = get_active_model() or get_ollama_model()
             if model:
                 select_model(model)
 
             tts = TTS()
+            
+            # Use custom niche if provided
+            niche = custom_niche if custom_niche else account["niche"]
+            
             yt = YouTube(
                 account_uuid=account["id"],
                 account_nickname=account["nickname"],
                 fp_profile_path=account["firefox_profile"],
-                niche=account["niche"],
+                niche=niche,
                 language=account["language"],
             )
 
@@ -905,8 +921,29 @@ def _start_pipeline(account, sentence_length, is_for_kids, subtitle_chars, headl
                     "video_path": yt.video_path,
                     "metadata": yt.metadata,
                     "topic": yt.subject,
+                    "thumbnail": yt.thumbnail_path if hasattr(yt, 'thumbnail_path') else "",
                 }
                 _pipeline_status = "done"
+                
+                # Auto-upload to YouTube if enabled
+                if auto_upload:
+                    info("Auto-upload enabled, uploading to YouTube...")
+                    _upload_status = "uploading"
+                    try:
+                        upload_success = yt.upload_video()
+                        if upload_success:
+                            _upload_status = "done"
+                            _upload_url = f"https://youtube.com/watch?v={yt.video_id}" if hasattr(yt, 'video_id') else ""
+                            success("Video uploaded to YouTube!")
+                        else:
+                            _upload_status = "error"
+                            _upload_error = "Upload failed"
+                            warning("YouTube upload failed")
+                    except Exception as upload_err:
+                        _upload_status = "error"
+                        _upload_error = str(upload_err)
+                        warning(f"Upload error: {upload_err}")
+                
             except Exception as e:
                 _pipeline_result = {"success": False, "error": str(e)}
                 _pipeline_status = "error"
@@ -1606,7 +1643,7 @@ def generate_video_for_account(account):
 
 def page_config():
     """Configuration page."""
-    st.markdown('<h1 class="main-header">⚙️ Configuracion</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">Configuracion</h1>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header">Edita la configuracion del proyecto</p>', unsafe_allow_html=True)
 
     config_path = os.path.join(PROJ_ROOT, "config.json")
@@ -1620,152 +1657,103 @@ def page_config():
     with open(config_path, "r", encoding="utf-8") as f:
         config_data = json.load(f)
 
-    tab1, tab2, tab3 = st.tabs(["🤖 IA", "🎥 Video", "🔧 Avanzado"])
+    tab1, tab2, tab3, tab4 = st.tabs(["IA", "Video", "Voces", "Avanzado"])
 
     with tab1:
-        st.markdown("### Configuracion de IA")
-        col1, col2 = st.columns(2)
-        with col1:
+        st.markdown('<div class="section-title">Configuracion de IA</div>', unsafe_allow_html=True)
+        c1, c2 = st.columns(2)
+        with c1:
             config_data["ollama_base_url"] = st.text_input("Ollama URL", value=config_data.get("ollama_base_url", ""))
             config_data["ollama_model"] = st.text_input("Modelo Ollama", value=config_data.get("ollama_model", ""))
-            config_data["nanobanana2_api_key"] = st.text_input(
-                "Gemini API Key",
-                value=config_data.get("nanobanana2_api_key", ""),
-                type="password"
-            )
-        with col2:
+        with c2:
+            config_data["nanobanana2_api_key"] = st.text_input("Gemini API Key", value=config_data.get("nanobanana2_api_key", ""), type="password")
             config_data["nanobanana2_model"] = st.text_input("Modelo Gemini", value=config_data.get("nanobanana2_model", ""))
-            config_data["nanobanana2_aspect_ratio"] = st.selectbox(
-                "Aspect Ratio",
-                ["9:16", "16:9", "1:1", "4:3"],
-                index=0 if config_data.get("nanobanana2_aspect_ratio") == "9:16" else 0
-            )
+        config_data["nanobanana2_aspect_ratio"] = st.selectbox("Aspect Ratio", ["9:16", "16:9", "1:1", "4:3"], index=0)
 
     with tab2:
-        st.markdown("### Configuracion de Video")
-        col1, col2 = st.columns(2)
-        with col1:
-            config_data["script_sentence_length"] = st.slider(
-                "Oraciones del guion", 2, 10, config_data.get("script_sentence_length", 4)
-            )
-            config_data["subtitle_max_chars"] = st.slider(
-                "Caracteres por subtitulo", 10, 80, config_data.get("subtitle_max_chars", 40)
-            )
-            config_data["threads"] = st.slider("Hilos de renderizado", 1, 8, config_data.get("threads", 2))
-        with col2:
+        st.markdown('<div class="section-title">Configuracion de Video</div>', unsafe_allow_html=True)
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            config_data["script_sentence_length"] = st.slider("Oraciones guion", 2, 10, config_data.get("script_sentence_length", 4))
+            config_data["threads"] = st.slider("Hilos render", 1, 8, config_data.get("threads", 2))
+        with c2:
+            config_data["subtitle_max_chars"] = st.slider("Caracteres subtitulo", 10, 80, config_data.get("subtitle_max_chars", 40))
+            config_data["tts_rate"] = st.text_input("Velocidad voz", value=config_data.get("tts_rate", "+0%"), help="+0% normal, -10% lento, +10% rapido")
+        with c3:
             config_data["is_for_kids"] = st.checkbox("Para ninos", value=config_data.get("is_for_kids", False))
             config_data["headless"] = st.checkbox("Firefox headless", value=config_data.get("headless", False))
-            config_data["tts_rate"] = st.text_input(
-                "Velocidad de voz",
-                value=config_data.get("tts_rate", "+0%"),
-                help="+0% normal, -10% mas lento, +10% mas rapido"
-            )
-    
-    # Voice Panel
-    st.markdown("---")
-    st.markdown("### 🎤 Panel de Voces")
-    st.caption("Selecciona la voz y escucha una muestra antes de usar")
-    
-    # Language filter
-    col1, col2 = st.columns([1, 3])
-    with col1:
-        voice_language = st.selectbox(
-            "Idioma",
-            options=["es", "en", "pt", "fr", "de", "it", "ja", "ko", "zh", "hi"],
-            index=0,
-            key="voice_lang"
-        )
-    
-    # Get voices for selected language
-    from src.tts import list_voices
-    
-    try:
-        voices = list_voices(voice_language)
-    except:
-        voices = []
-    
-    if voices:
-        # Voice selection
-        voice_options = {v["ShortName"]: f"{v['ShortName']} ({v.get('Gender', '?')})" for v in voices}
-        
-        with col2:
-            selected_voice = st.selectbox(
-                "Seleccionar voz",
-                options=list(voice_options.keys()),
-                format_func=lambda x: voice_options[x],
-                key="voice_select"
-            )
-        
-        # Voice info
-        voice_info = next((v for v in voices if v["ShortName"] == selected_voice), None)
-        if voice_info:
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.write(f"**Nombre:** {voice_info.get('ShortName', '?')}")
-            with col2:
-                st.write(f"**Genero:** {voice_info.get('Gender', '?')}")
-            with col3:
-                st.write(f"**Idioma:** {voice_info.get('Locale', '?')}")
-            with col4:
-                st.write(f"**Estilo:** {voice_info.get('VoiceType', '?')}")
-        
-        # Audio preview
-        st.markdown("#### 🔊 Escuchar Muestra")
-        
-        col1, col2, col3 = st.columns([2, 1, 2])
-        with col1:
-            sample_rate = st.selectbox(
-                "Velocidad de prueba",
-                options=["-20%", "-10%", "+0%", "+10%", "+20%"],
-                index=2,
-                key="sample_rate"
-            )
-        
-        with col2:
-            if st.button("▶️ Generar Muestra", use_container_width=True):
-                with st.spinner("Generando muestra de audio..."):
-                    from src.tts import generate_voice_sample
-                    sample_path = generate_voice_sample(selected_voice, voice_language, sample_rate)
-                    if sample_path:
-                        st.session_state["voice_sample"] = sample_path
-                        st.rerun()
-        
-        # Play sample
-        if "voice_sample" in st.session_state and os.path.exists(st.session_state["voice_sample"]):
-            with col3:
-                st.audio(st.session_state["voice_sample"], format="audio/mp3")
-        
-        # Set as default
-        st.markdown("#### ⚙️ Establecer como Voz por Defecto")
-        st.caption(f"Voz actual: **{config_data.get('tts_voice', 'es-CO-GonzaloNeural')}**")
-        
-        if st.button("✅ Usar esta voz como predeterminada", use_container_width=False):
-            config_data["tts_voice"] = selected_voice
-            st.success(f"Voz cambiada a: {selected_voice}")
-            st.rerun()
-    
-    else:
-        st.warning("No se encontraron voces para este idioma. Verifica tu conexion a internet.")
 
     with tab3:
-        st.markdown("### Configuracion Avanzada")
-        config_data["verbose"] = st.checkbox("Modo verbose", value=config_data.get("verbose", True))
-        config_data["stt_provider"] = st.selectbox(
-            "Proveedor STT",
-            ["local_whisper", "third_party_assemblyai"],
-            index=0 if config_data.get("stt_provider") == "local_whisper" else 0
-        )
-        config_data["whisper_model"] = st.text_input("Modelo Whisper", value=config_data.get("whisper_model", "base"))
-        config_data["zip_url"] = st.text_input("URL musica de fondo (.zip)", value=config_data.get("zip_url", ""))
-        config_data["imagemagick_path"] = st.text_input("Ruta ImageMagick", value=config_data.get("imagemagick_path", ""))
+        st.markdown('<div class="section-title">Panel de Voces</div>', unsafe_allow_html=True)
 
-    # Save button
+        col_lang, col_voice = st.columns([1, 3])
+        with col_lang:
+            voice_language = st.selectbox("Idioma", ["es", "en", "pt", "fr", "de", "it", "ja", "ko", "zh", "hi"], index=0, key="voice_lang")
+
+        from src.tts import list_voices
+
+        try:
+            voices = list_voices(voice_language)
+        except:
+            voices = []
+
+        if voices:
+            voice_options = {v["ShortName"]: f"{v['ShortName']} ({v.get('Gender', '?')})" for v in voices}
+
+            with col_voice:
+                selected_voice = st.selectbox("Seleccionar voz", options=list(voice_options.keys()), format_func=lambda x: voice_options[x], key="voice_select")
+
+            voice_info = next((v for v in voices if v["ShortName"] == selected_voice), None)
+            if voice_info:
+                c1, c2, c3, c4 = st.columns(4)
+                c1.write(f"**Nombre:** {voice_info.get('ShortName', '?')}")
+                c2.write(f"**Genero:** {voice_info.get('Gender', '?')}")
+                c3.write(f"**Idioma:** {voice_info.get('Locale', '?')}")
+                c4.write(f"**Estilo:** {voice_info.get('VoiceType', '?')}")
+
+            # Audio preview
+            c1, c2, c3 = st.columns([2, 1, 2])
+            with c1:
+                sample_rate = st.selectbox("Velocidad prueba", ["-20%", "-10%", "+0%", "+10%", "+20%"], index=2, key="sample_rate")
+            with c2:
+                if st.button("Generar Muestra", use_container_width=True):
+                    with st.spinner("Generando..."):
+                        from src.tts import generate_voice_sample
+                        sample_path = generate_voice_sample(selected_voice, voice_language, sample_rate)
+                        if sample_path:
+                            st.session_state["voice_sample"] = sample_path
+                            st.rerun()
+            with c3:
+                if "voice_sample" in st.session_state and os.path.exists(st.session_state["voice_sample"]):
+                    st.audio(st.session_state["voice_sample"], format="audio/mp3")
+
+            # Set as default
+            st.caption(f"Voz actual: **{config_data.get('tts_voice', 'es-CO-GonzaloNeural')}**")
+            if st.button("Usar esta voz como predeterminada"):
+                config_data["tts_voice"] = selected_voice
+                st.success(f"Voz cambiada a: {selected_voice}")
+                st.rerun()
+
+        else:
+            st.warning("No se encontraron voces para este idioma.")
+
+    with tab3:
+        st.markdown('<div class="section-title">Configuracion Avanzada</div>', unsafe_allow_html=True)
+        c1, c2 = st.columns(2)
+        with c1:
+            config_data["verbose"] = st.checkbox("Modo verbose", value=config_data.get("verbose", True))
+            config_data["whisper_model"] = st.text_input("Modelo Whisper", value=config_data.get("whisper_model", "base"))
+        with c2:
+            config_data["stt_provider"] = st.selectbox("Proveedor STT", ["local_whisper", "third_party_assemblyai"], index=0)
+            config_data["imagemagick_path"] = st.text_input("Ruta ImageMagick", value=config_data.get("imagemagick_path", ""))
+        config_data["zip_url"] = st.text_input("URL musica de fondo (.zip)", value=config_data.get("zip_url", ""))
+
     st.markdown("---")
-    if st.button("💾 Guardar Configuracion", type="primary", use_container_width=True):
+    if st.button("Guardar Configuracion", type="primary", use_container_width=True):
         with open(config_path, "w", encoding="utf-8") as f:
             json.dump(config_data, f, indent=2, ensure_ascii=False)
         reload_config()
-        st.success("✅ Configuracion guardada y recargada!")
+        st.success("Configuracion guardada y recargada!")
 
 
 # ──────────────────────────────────────────────

@@ -55,6 +55,8 @@ from src.config import (
     get_subtitle_font_size,
     get_subtitle_position,
     get_subtitle_max_width,
+    get_subtitle_bg_alpha,
+    get_subtitle_text_alpha,
     get_nanobanana2_api_key,
     get_nanobanana2_api_base_url,
     get_nanobanana2_model,
@@ -487,13 +489,26 @@ Rules:
         req_dur = max_duration / len(self.images)
 
         font_path = os.path.join(get_fonts_dir(), get_font())
+        
+        # Get transparency settings
+        bg_alpha = int(get("subtitle_bg_alpha", 60))
+        text_alpha = int(get("subtitle_text_alpha", 100))
 
         def make_subtitle_clip(txt: str, start: float, end: float) -> TextClip:
+            # Convert hex color to RGBA for transparency
+            color = get_subtitle_color()
+            if len(color) == 7:  # #RRGGBB
+                r, g, b = int(color[1:3], 16), int(color[3:5], 16), int(color[5:7], 16)
+                alpha = int(text_alpha * 2.55)
+                text_color = f"#{color[1:]}{'%02x' % alpha}"
+            else:
+                text_color = color
+            
             clip = TextClip(
                 text=txt,
                 font=font_path,
                 font_size=get_subtitle_font_size(),
-                color=get_subtitle_color(),
+                color=text_color,
                 stroke_color=get_subtitle_stroke_color(),
                 stroke_width=get_subtitle_stroke_width(),
                 size=(get_subtitle_max_width(), None),

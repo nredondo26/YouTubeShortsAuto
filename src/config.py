@@ -168,6 +168,16 @@ def get_subtitle_max_width() -> int:
     return int(get("subtitle_max_width", 1000))
 
 
+def get_subtitle_bg_alpha() -> int:
+    """Get subtitle background alpha (0-100)."""
+    return int(get("subtitle_bg_alpha", 60))
+
+
+def get_subtitle_text_alpha() -> int:
+    """Get subtitle text alpha (0-100)."""
+    return int(get("subtitle_text_alpha", 100))
+
+
 def get_zip_url() -> str:
     return str(get("zip_url", ""))
 
