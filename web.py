@@ -972,8 +972,6 @@ def page_generate():
         
         st.markdown(phone_html, unsafe_allow_html=True)
     
-    st.markdown(preview_html, unsafe_allow_html=True)
-    
     # Configuration summary
     with st.expander("📋 Configuracion actual", expanded=False):
         col1, col2, col3 = st.columns(3)
