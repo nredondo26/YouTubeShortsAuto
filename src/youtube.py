@@ -110,11 +110,19 @@ class YouTube:
         self.channel_id: str = ""
         self.uploaded_video_url: str = ""
 
-        # Firefox setup
+        # Firefox setup - lazy initialization
         if not os.path.isdir(fp_profile_path):
             raise ValueError(f"Firefox profile path does not exist: {fp_profile_path}")
 
         self._fp_profile_path = fp_profile_path
+        self.browser = None
+        self._browser_initialized = False
+
+    def _init_browser(self) -> None:
+        """Initialize browser lazily - only when needed for upload."""
+        if self._browser_initialized:
+            return
+        
         self.options = Options()
         if get_headless():
             self.options.add_argument("--headless")
@@ -122,12 +130,15 @@ class YouTube:
         self.options.add_argument(self._fp_profile_path)
         self.service = Service(GeckoDriverManager().install())
         self.browser = webdriver.Firefox(service=self.service, options=self.options)
+        self._browser_initialized = True
 
     def close(self) -> None:
         """Safely close the browser."""
         try:
-            if self.browser:
+            if self.browser and self._browser_initialized:
                 self.browser.quit()
+                self.browser = None
+                self._browser_initialized = False
         except Exception:
             pass
 
@@ -604,6 +615,7 @@ Rules:
 
     def get_channel_id(self) -> str:
         """Navigate to YouTube Studio and extract the channel ID."""
+        self._init_browser()
         self.browser.get("https://studio.youtube.com")
         time.sleep(3)
         self.channel_id = self.browser.current_url.split("/")[-1]
@@ -615,6 +627,9 @@ Rules:
         from selenium.webdriver.common.keys import Keys
 
         try:
+            # Initialize browser if not already done
+            self._init_browser()
+            
             self.get_channel_id()
             driver = self.browser
 

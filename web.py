@@ -669,6 +669,171 @@ def page_generate():
         subtitle_chars = st.slider("Caracteres por subtitulo", 10, 80, cfg_get("subtitle_max_chars", 40))
         headless = st.checkbox("Firefox headless (sin ventana)", value=cfg_get("headless", False))
     
+    # Subtitle customization section
+    st.markdown("---")
+    st.markdown("### 🎨 Personalizacion de Subtitulos")
+    st.caption("Configura como se veran los subtitulos en el video")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        subtitle_color = st.color_picker(
+            "Color del texto",
+            value=cfg_get("subtitle_color", "#FFFF00"),
+            key="sub_color"
+        )
+        subtitle_stroke_color = st.color_picker(
+            "Color del borde",
+            value=cfg_get("subtitle_stroke_color", "#000000"),
+            key="sub_stroke_color"
+        )
+    
+    with col2:
+        subtitle_font_size = st.slider(
+            "Tamano de fuente",
+            min_value=20,
+            max_value=150,
+            value=cfg_get("subtitle_font_size", 80),
+            key="sub_font_size"
+        )
+        subtitle_stroke_width = st.slider(
+            "Ancho del borde",
+            min_value=0,
+            max_value=10,
+            value=cfg_get("subtitle_stroke_width", 4),
+            key="sub_stroke_width"
+        )
+    
+    with col3:
+        subtitle_position = st.selectbox(
+            "Posicion vertical",
+            options=["top", "center", "bottom"],
+            index=["top", "center", "bottom"].index(cfg_get("subtitle_position", "center")),
+            key="sub_position"
+        )
+        subtitle_max_width = st.slider(
+            "Ancho maximo (px)",
+            min_value=400,
+            max_value=1200,
+            value=cfg_get("subtitle_max_width", 1000),
+            step=100,
+            key="sub_max_width"
+        )
+    
+    # Live preview
+    st.markdown("#### 👁️ Vista Previa en Vivo")
+    
+    # Create preview container with styled HTML
+    preview_html = f"""
+    <div style="
+        background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 16px;
+        padding: 20px;
+        margin: 10px 0;
+        position: relative;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: {'flex-start' if subtitle_position == 'top' else 'center' if subtitle_position == 'center' else 'flex-end'};
+        align-items: center;
+        border: 2px solid #333;
+        overflow: hidden;
+    ">
+        <!-- Simulated video frame -->
+        <div style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, 
+                rgba(0,0,0,0.3) 0%, 
+                rgba(0,0,0,0.1) 50%, 
+                rgba(0,0,0,0.3) 100%);
+            z-index: 1;
+        "></div>
+        
+        <!-- Sample image placeholder -->
+        <div style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            opacity: 0.3;
+            z-index: 0;
+        "></div>
+        
+        <!-- Subtitle preview -->
+        <div style="
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 8px;
+            max-width: {subtitle_max_width}px;
+            margin: {'20px 0' if subtitle_position == 'center' else '0'};
+            {'margin-top: 20px;' if subtitle_position == 'top' else ''}
+            {'margin-bottom: 20px;' if subtitle_position == 'bottom' else ''}
+        ">
+            <span style="
+                font-family: 'Impact', 'Arial Black', sans-serif;
+                font-size: {subtitle_font_size}px;
+                color: {subtitle_color};
+                text-shadow: 
+                    -{subtitle_stroke_width}px -{subtitle_stroke_width}px 0 {subtitle_stroke_color},
+                    {subtitle_stroke_width}px -{subtitle_stroke_width}px 0 {subtitle_stroke_color},
+                    -{subtitle_stroke_width}px {subtitle_stroke_width}px 0 {subtitle_stroke_color},
+                    {subtitle_stroke_width}px {subtitle_stroke_width}px 0 {subtitle_stroke_color};
+                letter-spacing: 2px;
+                line-height: 1.2;
+                display: inline-block;
+                max-width: 100%;
+                word-wrap: break-word;
+            ">
+                Ejemplo de subtitulo aqui
+            </span>
+        </div>
+        
+        <!-- Position indicator -->
+        <div style="
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(102, 126, 234, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            color: white;
+            z-index: 3;
+        ">
+            📍 {subtitle_position.upper()}
+        </div>
+    </div>
+    """
+    
+    st.markdown(preview_html, unsafe_allow_html=True)
+    
+    # Configuration summary
+    with st.expander("📋 Configuracion actual", expanded=False):
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.write(f"**Color texto:** {subtitle_color}")
+            st.write(f"**Color borde:** {subtitle_stroke_color}")
+        with col2:
+            st.write(f"**Tamano fuente:** {subtitle_font_size}px")
+            st.write(f"**Ancho borde:** {subtitle_stroke_width}px")
+        with col3:
+            st.write(f"**Posicion:** {subtitle_position}")
+            st.write(f"**Ancho max:** {subtitle_max_width}px")
+    
+    st.markdown("---")
+    
     # Drag & Drop for custom images
     st.markdown("### 📁 Imagenes Personalizadas (Opcional)")
     st.caption("Arrastra imagenes para usar en el video. Si no subes nada, se usaran imagenes generadas por IA.")
@@ -725,11 +890,18 @@ def page_generate():
             st.rerun()
     else:
         if st.button("🚀 GENERAR VIDEO", type="primary", use_container_width=True):
-            _start_pipeline(account, sentence_length, is_for_kids, subtitle_chars, headless)
+            _start_pipeline(
+                account, sentence_length, is_for_kids, subtitle_chars, headless,
+                subtitle_color, subtitle_stroke_color, subtitle_font_size,
+                subtitle_stroke_width, subtitle_position, subtitle_max_width
+            )
             st.rerun()
 
 
-def _start_pipeline(account, sentence_length, is_for_kids, subtitle_chars, headless):
+def _start_pipeline(account, sentence_length, is_for_kids, subtitle_chars, headless,
+                    subtitle_color="#FFFF00", subtitle_stroke_color="#000000",
+                    subtitle_font_size=80, subtitle_stroke_width=4,
+                    subtitle_position="center", subtitle_max_width=1000):
     global _pipeline_status, _pipeline_result, _upload_account, _upload_status
 
     _pipeline_status = "running"
@@ -757,6 +929,12 @@ def _start_pipeline(account, sentence_length, is_for_kids, subtitle_chars, headl
             config._config_cache["is_for_kids"] = is_for_kids
             config._config_cache["subtitle_max_chars"] = subtitle_chars
             config._config_cache["headless"] = headless
+            config._config_cache["subtitle_color"] = subtitle_color
+            config._config_cache["subtitle_stroke_color"] = subtitle_stroke_color
+            config._config_cache["subtitle_font_size"] = subtitle_font_size
+            config._config_cache["subtitle_stroke_width"] = subtitle_stroke_width
+            config._config_cache["subtitle_position"] = subtitle_position
+            config._config_cache["subtitle_max_width"] = subtitle_max_width
 
             model = get_active_model() or get_ollama_model()
             if model:
