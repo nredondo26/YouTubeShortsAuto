@@ -3,7 +3,7 @@
 import os
 import asyncio
 
-from src.config import MP_DIR, get_tts_voice
+from src.config import MP_DIR, get_tts_voice, get
 from src.status import info
 
 EDGE_SAMPLE_RATE = 24000
@@ -12,13 +12,14 @@ EDGE_SAMPLE_RATE = 24000
 class TTS:
     def __init__(self) -> None:
         self._voice = get_tts_voice()
+        self._rate = get("tts_rate", "+0%")
 
     def synthesize(self, text: str, output_path: str | None = None) -> str:
         """Convert text to speech using Microsoft Edge TTS.
 
         Args:
             text: The text to synthesize.
-            output_path: Optional output path. Defaults to .mp/tts_<uuid>.wav
+            output_path: Optional output path. Defaults to .mp/tts_<uuid>.mp3
 
         Returns:
             Path to the generated audio file.
@@ -34,13 +35,13 @@ class TTS:
         if not os.path.exists(output_path) or os.path.getsize(output_path) == 0:
             raise RuntimeError(f"TTS produced empty file: {output_path}")
 
-        info(f"TTS audio saved: {output_path}")
+        info(f"TTS audio saved (rate={self._rate}): {output_path}")
         return output_path
 
     async def _generate(self, text: str, output_path: str) -> None:
         import edge_tts
 
-        communicate = edge_tts.Communicate(text, self._voice)
+        communicate = edge_tts.Communicate(text, self._voice, rate=self._rate)
         await communicate.save(output_path)
 
 

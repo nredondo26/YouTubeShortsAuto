@@ -11,6 +11,7 @@
   "nanobanana2_model": "gemini-2.5-flash-image",
   "nanobanana2_aspect_ratio": "9:16",
   "tts_voice": "es-CO-GonzaloNeural",
+  "tts_rate": "-10%",
   "stt_provider": "local_whisper",
   "whisper_model": "base",
   "whisper_device": "auto",

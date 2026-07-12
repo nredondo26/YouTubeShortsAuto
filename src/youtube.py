@@ -100,6 +100,7 @@ class YouTube:
         self.image_prompts: list[str] = []
         self.tts_path: str = ""
         self.video_path: str = ""
+        self.thumbnail_path: str = ""
         self.channel_id: str = ""
         self.uploaded_video_url: str = ""
 
@@ -378,6 +379,25 @@ Full script for context:
 
         success(f"Generated {len(self.images)} images.")
 
+    def generate_thumbnail(self) -> Optional[str]:
+        """Generate a thumbnail for the video using AI."""
+        prompt = f"""Generate a YouTube Shorts thumbnail for a video about: {self.subject}
+
+Rules:
+- The thumbnail should be eye-catching and clickbait-worthy
+- Use bright colors and bold composition
+- Include visual elements that represent the topic
+- Make it dramatic and attention-grabbing
+- Return ONLY the image, no text overlay needed
+- Aspect ratio: 9:16 (vertical)"""
+
+        info("Generating thumbnail...")
+        thumbnail_path = self.generate_image(prompt)
+        if thumbnail_path:
+            success(f"Thumbnail saved: {thumbnail_path}")
+            self.thumbnail_path = thumbnail_path
+        return thumbnail_path
+
     # ──────────────────────────────────────────────
     # Subtitles
     # ──────────────────────────────────────────────
@@ -451,17 +471,21 @@ Full script for context:
 
         font_path = os.path.join(get_fonts_dir(), get_font())
 
-        def text_generator(txt: str) -> TextClip:
-            return TextClip(
+        def make_subtitle_clip(txt: str, start: float, end: float) -> TextClip:
+            clip = TextClip(
                 text=txt,
                 font=font_path,
-                font_size=100,
+                font_size=80,
                 color="#FFFF00",
                 stroke_color="black",
-                stroke_width=5,
-                size=(1080, 1920),
+                stroke_width=4,
+                size=(1000, None),
                 method="caption",
             )
+            clip = clip.with_start(start)
+            clip = clip.with_duration(end - start)
+            clip = clip.with_position(("center", "center"))
+            return clip
 
         info("Compositing video clips...")
         clips = []
@@ -494,14 +518,23 @@ Full script for context:
 
         final_clip = concatenate_videoclips(clips).with_fps(30)
 
-        # Subtitles
-        subtitles = None
+        # Subtitles - manual implementation to avoid SubtitlesClip bug
+        subtitle_clips = []
         try:
             srt_path = self.generate_subtitles(self.tts_path)
             import srt_equalizer
             srt_equalizer.equalize_srt_file(srt_path, srt_path, get_subtitle_max_chars())
-            subtitles = SubtitlesClip(srt_path, make_textclip=text_generator)
-            subtitles = subtitles.with_position(("center", "center"))
+            import srt
+            with open(srt_path, "r", encoding="utf-8") as f:
+                subs = list(srt.parse(f.read()))
+            for sub in subs:
+                try:
+                    sub_clip = make_subtitle_clip(sub.content, sub.start.total_seconds(), sub.end.total_seconds())
+                    subtitle_clips.append(sub_clip)
+                except Exception:
+                    pass
+            if subtitle_clips:
+                success(f"Created {len(subtitle_clips)} subtitle clips")
         except Exception as e:
             warning(f"Subtitle generation failed, continuing without: {e}")
 
@@ -517,8 +550,8 @@ Full script for context:
         final_clip = final_clip.with_audio(audio)
         final_clip = final_clip.with_duration(tts_clip.duration)
 
-        if subtitles is not None:
-            final_clip = CompositeVideoClip([final_clip, subtitles])
+        if subtitle_clips:
+            final_clip = CompositeVideoClip([final_clip] + subtitle_clips)
 
         final_clip.write_videofile(output_path, threads=threads)
 
@@ -540,6 +573,7 @@ Full script for context:
         self.generate_metadata()
         self.generate_prompts()
         self.generate_all_images()
+        self.generate_thumbnail()
 
         # Clean script for TTS (remove non-speech characters)
         clean_script = re.sub(r"[^\w\s.?!]", "", self.script)

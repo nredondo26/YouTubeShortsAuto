@@ -28,3 +28,4 @@ assemblyai>=0.20.0
 
 # Utils
 termcolor>=2.3.0
+prettytable>=3.9.0
