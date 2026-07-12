@@ -231,6 +231,139 @@ st.markdown("""
         padding: 2rem;
         font-size: 0.9rem;
     }
+    
+    /* ═══════════════════════════════════════════════
+       MOBILE RESPONSIVE
+       ═══════════════════════════════════════════════ */
+    
+    /* Base mobile styles */
+    @media (max-width: 768px) {
+        /* Headers */
+        .main-header {
+            font-size: 1.8rem !important;
+            margin-bottom: 0.3rem !important;
+        }
+        .sub-header {
+            font-size: 0.95rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        /* Cards */
+        .status-card, .metric-card {
+            padding: 1rem !important;
+            margin-bottom: 0.75rem !important;
+            border-radius: 12px !important;
+        }
+        .metric-value {
+            font-size: 1.5rem !important;
+        }
+        .metric-label {
+            font-size: 0.8rem !important;
+        }
+        
+        /* Status boxes */
+        .success-box, .error-box, .warning-box {
+            padding: 0.8rem !important;
+            border-radius: 8px !important;
+        }
+        
+        /* Buttons */
+        .stButton > button {
+            padding: 0.5rem 1rem !important;
+            font-size: 0.95rem !important;
+            border-radius: 8px !important;
+        }
+        
+        /* Inputs */
+        .stTextInput > div > div > input,
+        .stTextArea > div > div > textarea {
+            padding: 0.6rem !important;
+            font-size: 0.9rem !important;
+        }
+        
+        /* Sidebar */
+        [data-testid="stSidebar"] {
+            width: 100% !important;
+            min-width: 100% !important;
+        }
+        
+        /* Columns - stack on mobile */
+        .stColumn {
+            min-width: 100% !important;
+        }
+        
+        /* Tabs */
+        .stTabs [data-baseweb="tab"] {
+            padding: 8px 12px !important;
+            font-size: 0.85rem !important;
+        }
+        
+        /* Reduce padding */
+        .block-container {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 1rem !important;
+            font-size: 0.8rem !important;
+        }
+    }
+    
+    /* Very small screens */
+    @media (max-width: 480px) {
+        .main-header {
+            font-size: 1.5rem !important;
+        }
+        
+        .metric-card {
+            padding: 0.8rem !important;
+        }
+        .metric-value {
+            font-size: 1.3rem !important;
+        }
+        
+        .stButton > button {
+            padding: 0.4rem 0.8rem !important;
+            font-size: 0.9rem !important;
+        }
+    }
+    
+    /* Tablet */
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .main-header {
+            font-size: 2.2rem !important;
+        }
+    }
+    
+    /* Touch-friendly styles */
+    @media (hover: none) and (pointer: coarse) {
+        .stButton > button {
+            min-height: 48px !important;
+            min-width: 48px !important;
+        }
+        
+        .stTextInput > div > div > input,
+        .stTextArea > div > div > textarea {
+            min-height: 48px !important;
+        }
+        
+        .stSelectbox > div > div {
+            min-height: 48px !important;
+        }
+    }
+    
+    /* Landscape mobile */
+    @media (max-width: 768px) and (orientation: landscape) {
+        .main-header {
+            font-size: 1.5rem !important;
+        }
+        
+        .metric-card {
+            padding: 0.6rem !important;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -413,6 +546,40 @@ def page_generate():
     with col2:
         subtitle_chars = st.slider("Caracteres por subtitulo", 10, 80, cfg_get("subtitle_max_chars", 40))
         headless = st.checkbox("Firefox headless (sin ventana)", value=cfg_get("headless", False))
+    
+    # Drag & Drop for custom images
+    st.markdown("### 📁 Imagenes Personalizadas (Opcional)")
+    st.caption("Arrastra imagenes para usar en el video. Si no subes nada, se usaran imagenes generadas por IA.")
+    
+    uploaded_images = st.file_uploader(
+        "Seleccionar imagenes",
+        type=["png", "jpg", "jpeg", "webp"],
+        accept_multiple_files=True,
+        key="custom_images",
+        help="Formatos soportados: PNG, JPG, JPEG, WEBP"
+    )
+    
+    if uploaded_images:
+        st.success(f"✅ {len(uploaded_images)} imagenes seleccionadas")
+        cols = st.columns(min(4, len(uploaded_images)))
+        for i, img in enumerate(uploaded_images[:4]):
+            with cols[i]:
+                st.image(img, caption=f"Imagen {i+1}", use_container_width=True)
+    
+    # Drag & Drop for custom background music
+    st.markdown("### 🎵 Musica de Fondo Personalizada (Opcional)")
+    st.caption("Arrastra un archivo de audio para usar como musica de fondo.")
+    
+    uploaded_music = st.file_uploader(
+        "Seleccionar musica",
+        type=["mp3", "wav", "ogg", "m4a"],
+        accept_multiple_files=False,
+        key="custom_music",
+        help="Formatos soportados: MP3, WAV, OGG, M4A"
+    )
+    
+    if uploaded_music:
+        st.success(f"✅ Musica seleccionada: {uploaded_music.name}")
 
     st.markdown("---")
 

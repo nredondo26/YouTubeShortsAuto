@@ -49,6 +49,12 @@ from src.config import (
     get_fonts_dir,
     get_script_sentence_length,
     get_subtitle_max_chars,
+    get_subtitle_color,
+    get_subtitle_stroke_color,
+    get_subtitle_stroke_width,
+    get_subtitle_font_size,
+    get_subtitle_position,
+    get_subtitle_max_width,
     get_nanobanana2_api_key,
     get_nanobanana2_api_base_url,
     get_nanobanana2_model,
@@ -475,16 +481,25 @@ Rules:
             clip = TextClip(
                 text=txt,
                 font=font_path,
-                font_size=80,
-                color="#FFFF00",
-                stroke_color="black",
-                stroke_width=4,
-                size=(1000, None),
+                font_size=get_subtitle_font_size(),
+                color=get_subtitle_color(),
+                stroke_color=get_subtitle_stroke_color(),
+                stroke_width=get_subtitle_stroke_width(),
+                size=(get_subtitle_max_width(), None),
                 method="caption",
             )
             clip = clip.with_start(start)
             clip = clip.with_duration(end - start)
-            clip = clip.with_position(("center", "center"))
+            
+            # Position based on config
+            position = get_subtitle_position()
+            if position == "top":
+                clip = clip.with_position(("center", 50))
+            elif position == "bottom":
+                clip = clip.with_position(("center", -50))
+            else:  # center
+                clip = clip.with_position(("center", "center"))
+            
             return clip
 
         info("Compositing video clips...")

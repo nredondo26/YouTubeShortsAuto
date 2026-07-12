@@ -144,6 +144,30 @@ def get_subtitle_max_chars() -> int:
     return int(get("subtitle_max_chars", 40))
 
 
+def get_subtitle_color() -> str:
+    return str(get("subtitle_color", "#FFFF00"))
+
+
+def get_subtitle_stroke_color() -> str:
+    return str(get("subtitle_stroke_color", "#000000"))
+
+
+def get_subtitle_stroke_width() -> int:
+    return int(get("subtitle_stroke_width", 4))
+
+
+def get_subtitle_font_size() -> int:
+    return int(get("subtitle_font_size", 80))
+
+
+def get_subtitle_position() -> str:
+    return str(get("subtitle_position", "center"))
+
+
+def get_subtitle_max_width() -> int:
+    return int(get("subtitle_max_width", 1000))
+
+
 def get_zip_url() -> str:
     return str(get("zip_url", ""))
 
