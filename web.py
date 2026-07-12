@@ -439,13 +439,15 @@ def render_sidebar():
 # ──────────────────────────────────────────────
 
 def page_dashboard():
-    """Main dashboard with overview."""
+    """Main dashboard with overview and charts."""
     st.markdown('<h1 class="main-header">🎬 YouTubeShortsAuto</h1>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header">YouTube Shorts Automation Dashboard</p>', unsafe_allow_html=True)
 
     # Metrics
     accounts = get_accounts("youtube")
     total_videos = sum(len(a.get("videos", [])) for a in accounts)
+    uploaded_videos = sum(1 for a in accounts for v in a.get("videos", []) if v.get("url"))
+    pending_videos = total_videos - uploaded_videos
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -466,23 +468,143 @@ def page_dashboard():
         """.format(total_videos), unsafe_allow_html=True)
 
     with col3:
-        model = get_ollama_model() or "No configurado"
         st.markdown("""
         <div class="metric-card">
-            <div class="metric-value" style="font-size:1rem;">🤖</div>
-            <div class="metric-label">{}</div>
+            <div class="metric-value">{}</div>
+            <div class="metric-label">Subidos</div>
         </div>
-        """.format(model[:20]), unsafe_allow_html=True)
+        """.format(uploaded_videos), unsafe_allow_html=True)
 
     with col4:
-        api_ok = bool(cfg_get("nanobanana2_api_key", ""))
-        status = "✅ Listo" if api_ok else "⚠️ Falta API"
         st.markdown("""
         <div class="metric-card">
-            <div class="metric-value" style="font-size:1.2rem;">🎨</div>
-            <div class="metric-label">{}</div>
+            <div class="metric-value">{}</div>
+            <div class="metric-label">Pendientes</div>
         </div>
-        """.format(status), unsafe_allow_html=True)
+        """.format(pending_videos), unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # Charts section
+    st.markdown("### 📊 Analisis")
+    
+    if total_videos > 0:
+        import plotly.express as px
+        import plotly.graph_objects as go
+        from datetime import datetime, timedelta
+        
+        # Collect all video data
+        all_videos = []
+        for acc in accounts:
+            for v in acc.get("videos", []):
+                v["account"] = acc.get("nickname", "?")
+                v["niche"] = acc.get("niche", "?")
+                all_videos.append(v)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Videos per account (Pie chart)
+            account_counts = {}
+            for v in all_videos:
+                acc_name = v.get("account", "Unknown")
+                account_counts[acc_name] = account_counts.get(acc_name, 0) + 1
+            
+            fig_pie = px.pie(
+                values=list(account_counts.values()),
+                names=list(account_counts.keys()),
+                title="Videos por Cuenta",
+                color_discrete_sequence=px.colors.sequential.Plasma,
+                hole=0.4
+            )
+            fig_pie.update_layout(
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font_color="white",
+                height=350
+            )
+            st.plotly_chart(fig_pie, use_container_width=True)
+        
+        with col2:
+            # Upload status (Donut chart)
+            status_data = {"Subidos": uploaded_videos, "Pendientes": pending_videos}
+            
+            fig_status = px.pie(
+                values=list(status_data.values()),
+                names=list(status_data.keys()),
+                title="Estado de Uploads",
+                color_discrete_sequence=["#4ade80", "#fbbf24"],
+                hole=0.6
+            )
+            fig_status.update_layout(
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font_color="white",
+                height=350
+            )
+            st.plotly_chart(fig_status, use_container_width=True)
+        
+        # Timeline chart
+        st.markdown("### 📈 Timeline de Generacion")
+        
+        # Parse dates and group by day
+        daily_counts = {}
+        for v in all_videos:
+            date_str = v.get("date", "")
+            if date_str:
+                try:
+                    date = datetime.fromisoformat(date_str.replace("Z", "+00:00")).date()
+                    daily_counts[date] = daily_counts.get(date, 0) + 1
+                except:
+                    pass
+        
+        if daily_counts:
+            dates = sorted(daily_counts.keys())
+            counts = [daily_counts[d] for d in dates]
+            
+            fig_timeline = px.bar(
+                x=dates,
+                y=counts,
+                title="Videos Generados por Dia",
+                labels={"x": "Fecha", "y": "Videos"},
+                color_discrete_sequence=["#667eea"]
+            )
+            fig_timeline.update_layout(
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font_color="white",
+                height=300,
+                xaxis=dict(tickangle=-45)
+            )
+            st.plotly_chart(fig_timeline, use_container_width=True)
+        
+        # Niche distribution
+        st.markdown("### 🎯 Distribucion por Nicho")
+        
+        niche_counts = {}
+        for v in all_videos:
+            niche = v.get("niche", "Unknown")
+            niche_counts[niche] = niche_counts.get(niche, 0) + 1
+        
+        fig_niche = px.bar(
+            x=list(niche_counts.keys()),
+            y=list(niche_counts.values()),
+            title="Videos por Nicho",
+            labels={"x": "Nicho", "y": "Videos"},
+            color=list(niche_counts.keys()),
+            color_discrete_sequence=px.colors.sequential.Viridis
+        )
+        fig_niche.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font_color="white",
+            height=300,
+            showlegend=False
+        )
+        st.plotly_chart(fig_niche, use_container_width=True)
+        
+    else:
+        st.info("📊 Las graficas apareceran cuando tengas videos generados.")
 
     st.markdown("---")
 
