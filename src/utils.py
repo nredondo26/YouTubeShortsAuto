@@ -82,14 +82,6 @@ def fetch_songs() -> None:
 
 
 def choose_random_song() -> str | None:
-    """Choose a random audio file from Songs/. Returns None if no songs found."""
-    if not os.path.exists(SONGS_DIR):
-        return None
-    songs = [
-        f for f in os.listdir(SONGS_DIR)
-        if os.path.isfile(os.path.join(SONGS_DIR, f))
-        and f.lower().endswith(AUDIO_EXTENSIONS)
-    ]
-    if not songs:
-        return None
-    return os.path.join(SONGS_DIR, random.choice(songs))
+    """Choose a random audio file from Songs/ or download free music."""
+    from src.music import choose_random_song as _choose_random_song
+    return _choose_random_song()

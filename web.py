@@ -43,6 +43,7 @@ _pipeline_result = None
 _upload_status = None
 _upload_error = None
 _upload_account = None
+_upload_url = None
 
 # ──────────────────────────────────────────────
 # Page Config
@@ -56,15 +57,21 @@ st.set_page_config(
 )
 
 # ──────────────────────────────────────────────
-# Custom CSS
+# Custom CSS (Dark Mode)
 # ──────────────────────────────────────────────
 
 st.markdown("""
 <style>
+    /* Main theme */
+    .stApp {
+        background-color: #0e1117;
+    }
+    
+    /* Headers */
     .main-header {
         font-size: 2.5rem;
         font-weight: 700;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-align: center;
@@ -72,55 +79,157 @@ st.markdown("""
     }
     .sub-header {
         text-align: center;
-        color: #888;
+        color: #8b8b8b;
         margin-bottom: 2rem;
+        font-size: 1.1rem;
     }
+    
+    /* Cards */
     .status-card {
-        background: #1e1e2e;
-        border-radius: 12px;
-        padding: 1.2rem;
+        background: linear-gradient(145deg, #1e1e2e 0%, #252535 100%);
+        border-radius: 16px;
+        padding: 1.5rem;
         border-left: 4px solid #667eea;
         margin-bottom: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
     .metric-card {
-        background: #1e1e2e;
-        border-radius: 12px;
+        background: linear-gradient(145deg, #1e1e2e 0%, #252535 100%);
+        border-radius: 16px;
         padding: 1.5rem;
         text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s;
+    }
+    .metric-card:hover {
+        transform: translateY(-5px);
     }
     .metric-value {
         font-size: 2rem;
         font-weight: 700;
-        color: #667eea;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .metric-label {
-        color: #888;
+        color: #8b8b8b;
         font-size: 0.9rem;
+        margin-top: 0.5rem;
     }
+    
+    /* Status boxes */
     .success-box {
-        background: #1a3a1a;
+        background: linear-gradient(145deg, #1a3a1a 0%, #1d4a1d 100%);
         border: 1px solid #2d5a2d;
-        border-radius: 8px;
-        padding: 1rem;
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
         color: #4ade80;
+        box-shadow: 0 4px 15px rgba(74, 222, 128, 0.1);
     }
     .error-box {
-        background: #3a1a1a;
+        background: linear-gradient(145deg, #3a1a1a 0%, #4a1d1d 100%);
         border: 1px solid #5a2d2d;
-        border-radius: 8px;
-        padding: 1rem;
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
         color: #f87171;
+        box-shadow: 0 4px 15px rgba(248, 113, 113, 0.1);
     }
+    .warning-box {
+        background: linear-gradient(145deg, #3a3a1a 0%, #4a4a1d 100%);
+        border: 1px solid #5a5a2d;
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        color: #fbbf24;
+        box-shadow: 0 4px 15px rgba(251, 191, 36, 0.1);
+    }
+    
+    /* Buttons */
     .stButton > button {
         width: 100%;
-        border-radius: 8px;
+        border-radius: 12px;
         font-weight: 600;
-        padding: 0.5rem 1rem;
-        transition: all 0.3s;
+        padding: 0.6rem 1.5rem;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
     }
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    .stButton > button:active {
+        transform: translateY(-1px);
+    }
+    
+    /* Inputs */
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea {
+        background-color: #1e1e2e;
+        border: 1px solid #3d3d5c;
+        border-radius: 8px;
+        color: #ffffff;
+    }
+    .stTextInput > div > div > input:focus,
+    .stTextArea > div > div > textarea:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    }
+    
+    /* Selectbox */
+    .stSelectbox > div > div {
+        background-color: #1e1e2e;
+        border-radius: 8px;
+    }
+    
+    /* Expander */
+    .streamlit-expanderHeader {
+        background-color: #1e1e2e;
+        border-radius: 8px;
+    }
+    
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #0a0a12;
+    }
+    [data-testid="stSidebar"] .stMarkdown {
+        color: #ffffff;
+    }
+    
+    /* Divider */
+    hr {
+        border-color: #3d3d5c;
+    }
+    
+    /* Code blocks */
+    .stCodeBlock {
+        border-radius: 8px;
+    }
+    
+    /* Progress bar */
+    .stProgress > div > div > div {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background-color: #1e1e2e;
+        border-radius: 8px 8px 0 0;
+        padding: 10px 20px;
+    }
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    /* Footer */
+    .footer {
+        text-align: center;
+        color: #5a5a7a;
+        padding: 2rem;
+        font-size: 0.9rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -440,35 +549,110 @@ def _render_result():
         st.success("✅ Video generado exitosamente!")
 
         metadata = _pipeline_result.get("metadata", {})
-        col1, col2 = st.columns(2)
+        
+        # Video Preview Section
+        st.markdown("### 🎬 Preview del Video")
+        
+        video_path = _pipeline_result.get("video_path", "")
+        thumbnail_path = _pipeline_result.get("thumbnail", "")
+        
+        col1, col2 = st.columns([2, 1])
+        
         with col1:
-            st.markdown(f"**Tema:** {_pipeline_result.get('topic', '?')}")
-            st.markdown(f"**Titulo:** {metadata.get('title', '?')}")
-            st.markdown(f"**Descripcion:** {metadata.get('description', '?')[:200]}...")
-        with col2:
-            video_path = _pipeline_result.get("video_path", "")
             if video_path and os.path.exists(video_path):
                 st.video(video_path)
+                
+                # Video info
+                try:
+                    from moviepy import VideoFileClip
+                    clip = VideoFileClip(video_path)
+                    duration = clip.duration
+                    size = os.path.getsize(video_path) / (1024 * 1024)
+                    clip.close()
+                    
+                    st.caption(f"Duracion: {duration:.1f}s | Tamano: {size:.1f}MB")
+                except:
+                    pass
+            else:
+                st.warning("Video no encontrado")
+        
+        with col2:
+            st.markdown("**Metadatos:**")
+            st.markdown(f"**Tema:** {_pipeline_result.get('topic', '?')}")
+            st.markdown(f"**Titulo:** {metadata.get('title', '?')}")
+            st.markdown(f"**Descripcion:**")
+            st.text_area("Desc", value=metadata.get('description', '?'), height=150, disabled=True, label_visibility="collapsed")
+            
+            if thumbnail_path and os.path.exists(thumbnail_path):
+                st.markdown("**Thumbnail:**")
+                st.image(thumbnail_path, use_container_width=True)
 
         st.markdown("---")
-        st.markdown("### Subir a YouTube")
+        st.markdown("### 📤 Subir a Plataformas")
 
         if _upload_status == "uploading":
-            st.info("⏳ Subiendo a YouTube...")
+            st.info("⏳ Subiendo...")
             _render_logs_from_buffer(_upload_logs, max_lines=20)
             time.sleep(2)
             st.rerun()
         elif _upload_status == "done":
-            st.success("✅ Video subido a YouTube como No Listado!")
+            st.success("✅ Video subido exitosamente!")
+            if _upload_url:
+                st.markdown(f"🔗 [{_upload_url}]({_upload_url})")
         elif _upload_status == "error":
             st.error(f"❌ Error al subir: {_upload_error}")
         else:
-            if st.button("📤 Subir a YouTube (No Listado)", type="primary"):
-                if not _upload_account:
-                    st.error("No se encontro la cuenta.")
-                    return
-                _start_upload(_upload_account, _pipeline_result, metadata)
-                st.rerun()
+            # Platform selection
+            platform = st.selectbox(
+                "Seleccionar plataforma",
+                ["YouTube", "TikTok", "Instagram Reels", "Multi-plataforma"],
+                key="upload_platform"
+            )
+            
+            if platform == "Multi-plataforma":
+                st.info("Sube el mismo video a multiples plataformas simultaneamente")
+                platforms = st.multiselect(
+                    "Seleccionar plataformas",
+                    ["YouTube", "TikTok", "Instagram"],
+                    default=["YouTube"],
+                    key="multi_platforms"
+                )
+            else:
+                platforms = [platform]
+            
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                if st.button("📤 Subir Ahora", type="primary", use_container_width=True):
+                    if not _upload_account:
+                        st.error("No se encontro la cuenta.")
+                        return
+                    
+                    for p in platforms:
+                        platform_key = p.lower().replace(" ", "_").replace("_reels", "")
+                        if platform_key == "youtube":
+                            _start_upload(_upload_account, _pipeline_result, metadata)
+                        else:
+                            # For other platforms, use the platforms module
+                            from src.platforms import upload_to_platform
+                            result = upload_to_platform(
+                                platform=platform_key,
+                                video_path=_pipeline_result.get("video_path", ""),
+                                caption=metadata.get("title", ""),
+                                tags=metadata.get("tags", []),
+                                firefox_profile_path=_upload_account.get("firefox_profile", ""),
+                            )
+                            if result["success"]:
+                                st.success(f"✅ Subido a {p}!")
+                            else:
+                                st.error(f"❌ Error en {p}: {result.get('error')}")
+                    st.rerun()
+            
+            with col2:
+                if st.button("📅 Programar Upload", use_container_width=True):
+                    st.session_state["show_scheduler_modal"] = True
+            with col3:
+                if st.button("💾 Solo Guardar", use_container_width=True):
+                    st.success(f"Video guardado en: {video_path}")
     else:
         st.error(f"❌ Error: {_pipeline_result.get('error', 'Error desconocido')}")
 
@@ -594,9 +778,9 @@ def page_accounts():
 
 
 def page_history():
-    """Video history page."""
+    """Video history page with analytics."""
     st.markdown('<h1 class="main-header">📜 Historial</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">Videos generados y subidos</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Videos generados, subidos y estadisticas</p>', unsafe_allow_html=True)
 
     accounts = get_accounts("youtube")
     all_videos = []
@@ -605,6 +789,7 @@ def page_history():
         for v in acc.get("videos", []):
             v["account_nickname"] = acc.get("nickname", "?")
             v["account_id"] = acc.get("id", "?")
+            v["account_niche"] = acc.get("niche", "?")
             all_videos.append(v)
 
     if not all_videos:
@@ -613,19 +798,51 @@ def page_history():
 
     all_videos.sort(key=lambda x: x.get("date", ""), reverse=True)
 
+    # Analytics Summary
+    st.markdown("### 📊 Estadisticas")
+    col1, col2, col3, col4 = st.columns(4)
+    
+    total_videos = len(all_videos)
+    uploaded_videos = len([v for v in all_videos if v.get("url")])
+    pending_videos = len([v for v in all_videos if not v.get("url")])
+    unique_accounts = len(set(v["account_nickname"] for v in all_videos))
+    
+    with col1:
+        st.metric("Total Videos", total_videos)
+    with col2:
+        st.metric("Subidos", uploaded_videos)
+    with col3:
+        st.metric("Pendientes", pending_videos)
+    with col4:
+        st.metric("Cuentas Activas", unique_accounts)
+
+    st.divider()
+
     # Filters
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     with col1:
         account_filter = st.selectbox(
             "Filtrar por cuenta",
             ["Todas"] + list(set(v["account_nickname"] for v in all_videos))
         )
     with col2:
+        status_filter = st.selectbox(
+            "Filtrar por estado",
+            ["Todos", "Subidos", "Pendientes"]
+        )
+    with col3:
         search = st.text_input("🔍 Buscar por titulo", placeholder="VHS...")
 
     filtered = all_videos
+    
     if account_filter != "Todas":
         filtered = [v for v in filtered if v["account_nickname"] == account_filter]
+    
+    if status_filter == "Subidos":
+        filtered = [v for v in filtered if v.get("url")]
+    elif status_filter == "Pendientes":
+        filtered = [v for v in filtered if not v.get("url")]
+    
     if search:
         filtered = [v for v in filtered if search.lower() in v.get("title", "").lower()]
 
@@ -633,12 +850,342 @@ def page_history():
 
     for v in filtered:
         with st.container():
-            col1, col2, col3, col4 = st.columns([3, 2, 1, 1])
-            col1.markdown(f"**{v.get('title', 'Sin titulo')[:60]}**")
-            col2.write(f"📁 {v.get('account_nickname', '?')} | 📅 {v.get('date', '?')}")
+            col1, col2, col3, col4, col5 = st.columns([3, 2, 1, 1, 1])
+            
+            # Title and niche
+            title = v.get('title', 'Sin titulo')
+            col1.markdown(f"**{title[:50]}**")
+            col1.caption(f"🏷️ {v.get('account_niche', '?')}")
+            
+            # Account and date
+            col2.write(f"📁 {v.get('account_nickname', '?')}")
+            col2.caption(f"📅 {v.get('date', '?')}")
+            
+            # Status
             if v.get("url"):
-                col3.link_button("▶️ Ver", v["url"])
-            col4.write(f"📄 {v.get('description', '')[:50]}...")
+                col3.success("✅ Subido")
+            else:
+                col3.warning("⏳ Pendiente")
+            
+            # View button
+            if v.get("url"):
+                col4.link_button("▶️ Ver", v["url"])
+            
+            # Description preview
+            desc = v.get('description', '')[:80]
+            col5.caption(f"📄 {desc}...")
+
+    # Export option
+    if st.button("📥 Exportar historial como JSON", use_container_width=False):
+        import json
+        export_data = [{
+            "title": v.get("title"),
+            "account": v.get("account_nickname"),
+            "date": v.get("date"),
+            "url": v.get("url"),
+            "description": v.get("description", "")[:200],
+        } for v in filtered]
+        
+        st.download_button(
+            label="⬇️ Descargar JSON",
+            data=json.dumps(export_data, indent=2, ensure_ascii=False),
+            file_name=f"historial_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+            mime="application/json",
+        )
+
+
+def page_scheduler():
+    """Upload scheduler page."""
+    st.markdown('<h1 class="main-header">📅 Programador de Uploads</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Programa uploads automaticos a horas pico</p>', unsafe_allow_html=True)
+
+    from src.scheduler import (
+        get_schedule_status,
+        update_schedule_settings,
+        schedule_upload,
+        cancel_scheduled_upload,
+        clear_completed_uploads,
+        start_scheduler,
+        stop_scheduler,
+    )
+
+    # Schedule status
+    status = get_schedule_status()
+
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("Estado", "🟢 Activo" if status["enabled"] else "🔴 Inactivo")
+    with col2:
+        st.metric("Pendientes", status["pending"])
+    with col3:
+        st.metric("Subidos", status["uploaded"])
+    with col4:
+        st.metric("Errores", status["errors"])
+
+    st.divider()
+
+    # Settings
+    st.markdown("### ⚙️ Configuracion del Programador")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        enabled = st.toggle("Activar programador", value=status["enabled"])
+    with col2:
+        hours_options = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+        selected_hours = st.multiselect(
+            "Horas de upload (hora local)",
+            options=hours_options,
+            default=[h for h in status["upload_hours"] if h in hours_options],
+            format_func=lambda x: f"{x:02d}:00"
+        )
+
+    if st.button("💾 Guardar configuracion", use_container_width=True):
+        update_schedule_settings(enabled=enabled, upload_hours=selected_hours)
+        if enabled:
+            start_scheduler()
+            st.success("Programador activado!")
+        else:
+            stop_scheduler()
+            st.info("Programador desactivado")
+        st.rerun()
+
+    st.divider()
+
+    # Schedule upload manually
+    st.markdown("### 📤 Programar Upload Manual")
+
+    accounts = get_accounts("youtube")
+    if accounts:
+        with st.form("schedule_form"):
+            col1, col2 = st.columns(2)
+            with col1:
+                account_select = st.selectbox(
+                    "Cuenta",
+                    options=[a["id"] for a in accounts],
+                    format_func=lambda x: next((a["nickname"] for a in accounts if a["id"] == x), x)
+                )
+            with col2:
+                video_path = st.text_input("Ruta del video")
+
+            title = st.text_input("Titulo")
+            description = st.text_area("Descripcion", height=100)
+            tags = st.text_input("Tags (separados por coma)")
+
+            submitted = st.form_submit_button("📅 Programar", use_container_width=True)
+
+            if submitted:
+                if not video_path or not title:
+                    st.error("Video path y titulo son requeridos")
+                else:
+                    tags_list = [t.strip() for t in tags.split(",") if t.strip()]
+                    schedule_upload(video_path, account_select, title, description, tags_list)
+                    st.success("Video programado!")
+                    st.rerun()
+    else:
+        st.warning("No hay cuentas disponibles. Crea una cuenta primero.")
+
+    st.divider()
+
+    # Pending uploads
+    st.markdown("### 📋 Uploads Pendientes")
+
+    import json
+    schedule_file = os.path.join(PROJ_ROOT, "schedule.json")
+    if os.path.exists(schedule_file):
+        with open(schedule_file, "r", encoding="utf-8") as f:
+            schedule_data = json.load(f)
+
+        pending = [u for u in schedule_data.get("scheduled_uploads", []) if u["status"] == "pending"]
+
+        if pending:
+            for i, upload in enumerate(pending):
+                with st.container():
+                    col1, col2, col3 = st.columns([4, 2, 1])
+                    col1.markdown(f"**{upload.get('title', 'Sin titulo')[:50]}**")
+                    col1.caption(f"📁 {upload.get('account_id', '?')[:8]}...")
+                    col2.caption(f"📅 Creado: {upload.get('created_at', '?')[:16]}")
+                    if col3.button("❌", key=f"cancel_{i}"):
+                        cancel_scheduled_upload(i)
+                        st.rerun()
+        else:
+            st.info("No hay uploads pendientes")
+
+        if st.button("🗑️ Limpiar completados", use_container_width=False):
+            clear_completed_uploads()
+            st.rerun()
+    else:
+        st.info("No hay programa de uploads")
+
+
+def page_multichannel():
+    """Multi-channel batch generation page."""
+    st.markdown('<h1 class="main-header">🚀 Multi-Canal</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Genera videos para multiples canales simultaneamente</p>', unsafe_allow_html=True)
+
+    from src.batch import generate_batch, BatchWorker
+    from src.cache import get_accounts
+
+    accounts = get_accounts("youtube")
+
+    if not accounts:
+        st.warning("No hay cuentas disponibles. Crea al menos una cuenta en la pagina de Cuentas.")
+        return
+
+    # Account selection
+    st.markdown("### 👥 Seleccionar Cuentas")
+
+    account_options = {a["id"]: f"{a['nickname']} ({a['niche']})" for a in accounts}
+    selected_accounts = st.multiselect(
+        "Selecciona cuentas para generar videos",
+        options=list(account_options.keys()),
+        format_func=lambda x: account_options[x],
+        default=list(account_options.keys())
+    )
+
+    # Settings
+    col1, col2 = st.columns(2)
+    with col1:
+        videos_per_account = st.number_input(
+            "Videos por cuenta",
+            min_value=1,
+            max_value=10,
+            value=1,
+        )
+    with col2:
+        delay_between = st.slider(
+            "Segundos entre videos",
+            min_value=10,
+            max_value=300,
+            value=30,
+        )
+
+    st.divider()
+
+    # Generate button
+    if st.button("🚀 Generar Batch", use_container_width=True, type="primary"):
+        if not selected_accounts:
+            st.error("Selecciona al menos una cuenta")
+        else:
+            selected = [a for a in accounts if a["id"] in selected_accounts]
+
+            st.info(f"Generando {videos_per_account} video(s) para {len(selected)} cuentas...")
+
+            # Create progress placeholders
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            results_container = st.container()
+
+            total_videos = len(selected) * videos_per_account
+            completed = 0
+
+            for account in selected:
+                for i in range(videos_per_account):
+                    status_text.text(f"Generando video {completed + 1}/{total_videos} para {account['nickname']}...")
+
+                    try:
+                        result = generate_video_for_account(account)
+                        
+                        with results_container:
+                            if result["success"]:
+                                st.success(f"✅ {account['nickname']}: {result.get('topic', 'Video generado')}")
+                            else:
+                                st.error(f"❌ {account['nickname']}: {result.get('error', 'Error desconocido')}")
+                    except Exception as e:
+                        with results_container:
+                            st.error(f"❌ {account['nickname']}: {str(e)}")
+
+                    completed += 1
+                    progress_bar.progress(completed / total_videos)
+
+                    # Delay between videos
+                    if i < videos_per_account - 1:
+                        time.sleep(delay_between)
+
+            status_text.text("✅ Batch completado!")
+            st.balloons()
+
+    st.divider()
+
+    # Quick actions
+    st.markdown("### ⚡ Acciones Rapidas")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        if st.button("🔄 Generar 1 video por cuenta", use_container_width=True):
+            st.session_state["batch_quick"] = {"videos": 1}
+
+    with col2:
+        if st.button("🔄 Generar 3 videos por cuenta", use_container_width=True):
+            st.session_state["batch_quick"] = {"videos": 3}
+
+    with col3:
+        if st.button("🔄 Generar 5 videos por cuenta", use_container_width=True):
+            st.session_state["batch_quick"] = {"videos": 5}
+
+    # Handle quick actions
+    if "batch_quick" in st.session_state:
+        quick = st.session_state.pop("batch_quick")
+        selected = [a for a in accounts if a["id"] in selected_accounts]
+
+        if selected:
+            with st.spinner(f"Generando {quick['videos']} video(s) por cuenta..."):
+                results = generate_batch(selected, quick["videos"])
+
+            successful = len([r for r in results if r["success"]])
+            failed = len([r for r in results if not r["success"]])
+
+            if successful > 0:
+                st.success(f"✅ {successful} videos generados exitosamente!")
+            if failed > 0:
+                st.error(f"❌ {failed} videos fallaron")
+
+
+def generate_video_for_account(account):
+    """Helper function for multi-channel generation."""
+    import time as _time
+    from src.config import get as cfg_get, reload_config
+    from src.llm import select_model, get_active_model
+    from src.tts import TTS
+    from src.youtube import YouTube
+
+    try:
+        # Reload config
+        from src import config
+        config._config_cache = None
+        reload_config()
+
+        model = get_active_model() or cfg_get("ollama_model", "")
+        if model:
+            select_model(model)
+
+        tts = TTS()
+        yt = YouTube(
+            account_uuid=account["id"],
+            account_nickname=account["nickname"],
+            fp_profile_path=account["firefox_profile"],
+            niche=account["niche"],
+            language=account["language"],
+        )
+
+        try:
+            yt.generate_video(tts)
+            return {
+                "success": True,
+                "account": account["nickname"],
+                "video_path": yt.video_path,
+                "metadata": yt.metadata,
+                "topic": yt.subject,
+            }
+        finally:
+            yt.close()
+
+    except Exception as e:
+        return {
+            "success": False,
+            "account": account["nickname"],
+            "error": str(e),
+        }
 
 
 def page_config():
@@ -730,7 +1277,7 @@ def main():
     # Navigation
     page = st.sidebar.radio(
         "Navegacion",
-        ["🏠 Dashboard", "🎥 Generar Short", "👤 Cuentas", "📜 Historial", "⚙️ Configuracion"],
+        ["🏠 Dashboard", "🎥 Generar Short", "👤 Cuentas", "📜 Historial", "📅 Programador", "🚀 Multi-Canal", "⚙️ Configuracion"],
         label_visibility="collapsed"
     )
 
@@ -742,6 +1289,10 @@ def main():
         page_accounts()
     elif page == "📜 Historial":
         page_history()
+    elif page == "📅 Programador":
+        page_scheduler()
+    elif page == "🚀 Multi-Canal":
+        page_multichannel()
     elif page == "⚙️ Configuracion":
         page_config()
 
